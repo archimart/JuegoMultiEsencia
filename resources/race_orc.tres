@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/companion_wolf.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+race_name = "Orco"
+description = "Fuerza bruta. Compañero: Lobo de guerra"
+walk_tex_path = "res://assets/Actor/Character/GreenPig/SeparateAnim/Walk.png"
+idle_tex_path = "res://assets/Actor/Character/GreenPig/SeparateAnim/Idle.png"
+max_hp = 45
+speed = 70.0
+damage_multiplier = 1.5
+companion_data = ExtResource("2")

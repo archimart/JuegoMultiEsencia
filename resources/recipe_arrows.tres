@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RecipeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_data.gd" id="1_arr"]
+
+[resource]
+script = ExtResource("1_arr")
+recipe_name = "Flechas x5"
+ingredients = {"wood": 1}
+result_item = "arrows"
+result_amount = 5

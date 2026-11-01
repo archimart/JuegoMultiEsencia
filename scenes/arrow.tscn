@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/arrow.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="col"]
+size = Vector2(10.0, 3.0)
+
+[node name="Arrow" type="Area2D"]
+script = ExtResource("1")
+collision_layer = 16
+collision_mask = 9
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("col")

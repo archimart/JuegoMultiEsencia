@@ -4,22 +4,3 @@
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1")
-
-[node name="Panel" type="Panel" parent="."]
-offset_right = 130.0
-offset_bottom = 52.0
-
-[node name="WoodLabel" type="Label" parent="Panel"]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 122.0
-offset_bottom = 28.0
-text = "Madera: 0"
-
-[node name="HintLabel" type="Label" parent="Panel"]
-offset_left = 8.0
-offset_top = 28.0
-offset_right = 122.0
-offset_bottom = 48.0
-text = "[E] talar árbol"
-theme_override_font_sizes/font_size = 9

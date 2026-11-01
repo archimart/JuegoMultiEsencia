@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/companion_hawk.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+race_name = "Humano"
+description = "Versátil. Compañero: Halcón explorador"
+walk_tex_path = "res://assets/Actor/Character/Hunter/SeparateAnim/Walk.png"
+idle_tex_path = "res://assets/Actor/Character/Hunter/SeparateAnim/Idle.png"
+max_hp = 30
+speed = 80.0
+damage_multiplier = 1.0
+companion_data = ExtResource("2")

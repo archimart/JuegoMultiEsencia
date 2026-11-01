@@ -14,6 +14,12 @@ z_index = -1
 [node name="NatureLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true
 
+[node name="PathLayer" type="TileMapLayer" parent="."]
+z_index = -1
+
+[node name="BuildingLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+
 [node name="Player" parent="." instance=ExtResource("2")]
 position = Vector2(320, 200)
 

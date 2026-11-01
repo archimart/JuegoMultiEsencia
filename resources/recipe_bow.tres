@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RecipeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_data.gd" id="1_bow"]
+
+[resource]
+script = ExtResource("1_bow")
+recipe_name = "Arco"
+ingredients = {"wood": 5}
+result_item = "bow"
+result_amount = 1

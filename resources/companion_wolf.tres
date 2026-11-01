@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CompanionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/companion_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+companion_name = "Lobo de guerra"
+sprite_is_4dir = false
+sprite_tex = "res://assets/Actor/Animal/DogBlack/SpriteSheet.png"
+sprite_cell_w = 18
+sprite_cell_h = 17
+sprite_fps = 5.0
+ability_scene_path = "res://scenes/abilities/wolf_melee_ability.tscn"
+damage_per_level = [4, 7, 10, 13, 18]
+cooldown_per_level = [2.5, 2.0, 1.7, 1.4, 1.0]
+xp_to_next = [5, 15, 30, 60, 0]
