@@ -20,6 +20,16 @@ z_index = -1
 [node name="BuildingLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true
 
+[node name="CityFloorLayer" type="TileMapLayer" parent="."]
+
+[node name="CityBuildingLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+
+[node name="CaveWallLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+
+[node name="CaveFloorLayer" type="TileMapLayer" parent="."]
+
 [node name="Player" parent="." instance=ExtResource("2")]
 position = Vector2(320, 200)
 

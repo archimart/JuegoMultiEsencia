@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://resources/companion_hawk.tres" id="2_comp"]
+
+[resource]
+script = ExtResource("1_script")
+race_name = "Elfo"
+description = "Ágil pero frágil. Su espíritu del bosque lo cura y protege."
+sprite_dir_path = "res://assets/caracter/A_fantasy_ELF_clearly_an"
+max_hp = 20
+speed = 110.0
+damage_multiplier = 0.8
+companion_data = ExtResource("2_comp")

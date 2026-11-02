@@ -4,6 +4,7 @@ extends Control
 const RACE_PATHS: Array[String] = [
 	"res://resources/race_human.tres",
 	"res://resources/race_orc.tres",
+	"res://resources/race_elf.tres",
 ]
 
 const C_BG      := Color(0.07, 0.07, 0.10, 1.00)
@@ -85,8 +86,7 @@ func _build_card(race, idx: int) -> Panel:
 	card.size                = Vector2(CARD_W, CARD_H)
 	card.add_theme_stylebox_override("panel", _sb_card(false))
 
-	# Sprite del personaje (idle "down" = Rect2(0,0,16,16) del idle_tex)
-	var sprite_container := SubViewportContainer.new()  # no: usamos TextureRect directo
+	# Sprite del personaje
 	if not race.idle_tex_path.is_empty() and ResourceLoader.exists(race.idle_tex_path):
 		var tex: Texture2D = load(race.idle_tex_path)
 		var atlas := AtlasTexture.new()
@@ -99,6 +99,16 @@ func _build_card(race, idx: int) -> Panel:
 		tr.position     = Vector2(CARD_W * 0.5 - 32.0, 14.0)
 		tr.size         = Vector2(64.0, 64.0)
 		card.add_child(tr)
+	elif not race.sprite_dir_path.is_empty():
+		var south: String = race.sprite_dir_path + "/Idle/rotations/south.png"
+		if ResourceLoader.exists(south):
+			var tr := TextureRect.new()
+			tr.texture      = load(south)
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
+			tr.position     = Vector2(CARD_W * 0.5 - 32.0, 14.0)
+			tr.size         = Vector2(64.0, 64.0)
+			card.add_child(tr)
 
 	# Nombre
 	var name_lbl := Label.new()

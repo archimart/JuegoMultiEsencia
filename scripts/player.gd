@@ -13,8 +13,9 @@ const RESPAWN_POS        := Vector2(80.0, 90.0)
 
 var max_hp: int   = 30     # público para que hud.gd lo lea
 var _speed: float = 80.0
-var _walk_tex: String = DEFAULT_WALK_TEX
-var _idle_tex: String = DEFAULT_IDLE_TEX
+var _walk_tex:       String = DEFAULT_WALK_TEX
+var _idle_tex:       String = DEFAULT_IDLE_TEX
+var _sprite_dir_path: String = ""
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -34,8 +35,9 @@ func setup_race(race: RaceData) -> void:
 	max_hp  = race.max_hp
 	hp      = race.max_hp
 	_speed  = race.speed
-	_walk_tex = race.walk_tex_path if not race.walk_tex_path.is_empty() else DEFAULT_WALK_TEX
-	_idle_tex = race.idle_tex_path if not race.idle_tex_path.is_empty() else DEFAULT_IDLE_TEX
+	_walk_tex        = race.walk_tex_path if not race.walk_tex_path.is_empty() else DEFAULT_WALK_TEX
+	_idle_tex        = race.idle_tex_path if not race.idle_tex_path.is_empty() else DEFAULT_IDLE_TEX
+	_sprite_dir_path = race.sprite_dir_path
 	_build_frames()
 	health_changed.emit()
 
@@ -155,7 +157,38 @@ func _update_anim(moving: bool) -> void:
 
 
 func _build_frames() -> void:
+	if not _sprite_dir_path.is_empty():
+		_build_directional_frames()
+		return
 	var frames := DirectionAnimator.build_4dir_frames(load(_walk_tex), 16, 4, 8.0, "walk")
 	DirectionAnimator.build_4dir_frames(load(_idle_tex), 16, 1, 1.0, "idle", frames)
+	_sprite.sprite_frames = frames
+	_sprite.play("idle_down")
+
+
+func _build_directional_frames() -> void:
+	var frames := SpriteFrames.new()
+	frames.remove_animation("default")
+	var base := _sprite_dir_path
+	var dir_map := {"down": "south", "up": "north", "left": "west", "right": "east"}
+	for dir: String in ["down", "up", "left", "right"]:
+		var dname: String = dir_map[dir]
+
+		# Walk: 8 frames con loop
+		var walk_anim := "walk_" + dir
+		frames.add_animation(walk_anim)
+		frames.set_animation_speed(walk_anim, 8.0)
+		frames.set_animation_loop(walk_anim, true)
+		for i: int in 8:
+			var path := base + "/Idle/animations/Walking/" + dname + "/frame_%03d.png" % i
+			frames.add_frame(walk_anim, load(path))
+
+		# Idle: 1 frame estático
+		var idle_anim := "idle_" + dir
+		frames.add_animation(idle_anim)
+		frames.set_animation_speed(idle_anim, 1.0)
+		frames.set_animation_loop(idle_anim, false)
+		frames.add_frame(idle_anim, load(base + "/Idle/rotations/" + dname + ".png"))
+
 	_sprite.sprite_frames = frames
 	_sprite.play("idle_down")
