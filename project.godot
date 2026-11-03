@@ -15,6 +15,12 @@ run/main_scene="res://scenes/race_select.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+FX="*res://autoload/fx.gd"
+SFX="*res://autoload/sfx.gd"
+GameState="*res://autoload/game_state.gd"
+
 [display]
 
 window/size/viewport_width=640
@@ -34,12 +40,6 @@ window/stretch/scale_mode="integer"
 [physics]
 
 3d/physics_engine="Jolt Physics"
-
-[autoload]
-
-FX="*res://autoload/fx.gd"
-SFX="*res://autoload/sfx.gd"
-GameState="*res://autoload/game_state.gd"
 
 [rendering]
 

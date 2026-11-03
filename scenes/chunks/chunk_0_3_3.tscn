@@ -1,0 +1,36 @@
+[gd_scene format=4 uid="uid://b5e80o5h8vlol"]
+
+[ext_resource type="Script" uid="uid://bqbva2modvvpm" path="res://scripts/chunk.gd" id="1_vdmxw"]
+[ext_resource type="TileSet" uid="uid://ienioqesnckk" path="res://resources/floor_tileset.tres" id="2_qu642"]
+[ext_resource type="TileSet" path="res://resources/path_tileset.tres" id="3_aq282"]
+[ext_resource type="TileSet" path="res://resources/city_floor_tileset.tres" id="4_e7ssw"]
+[ext_resource type="TileSet" uid="uid://dqiw1ki3q2s4k" path="res://resources/nature_tileset.tres" id="5_msdli"]
+[ext_resource type="TileSet" path="res://resources/cave_wall_tileset.tres" id="6_8wvr5"]
+[ext_resource type="TileSet" path="res://resources/city_building_tileset.tres" id="7_rleeh"]
+
+[node name="Chunk" type="Node2D" unique_id=1881079822]
+script = ExtResource("1_vdmxw")
+chunk_x = 3
+chunk_y = 3
+
+[node name="FloorLayer" type="TileMapLayer" parent="." unique_id=1058781741]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAABAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAABAAcAAAACAAEAAAABAAcAAAADAAEAAAABAAcAAAAEAAEAAAABAAcAAAAFAAEAAAABAAcAAAAGAAEAAAABAAcAAAAAAAIAAAABAAcAAAABAAIAAAABAAcAAAACAAIAAAABAAcAAAADAAIAAAABAAcAAAAEAAIAAAABAAcAAAAFAAIAAAABAAcAAAAGAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAABAAcAAAADAAMAAAABAAcAAAAEAAMAAAABAAcAAAAFAAMAAAABAAcAAAAGAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAABAAcAAAACAAQAAAABAAcAAAADAAQAAAABAAcAAAAEAAQAAAABAAcAAAAFAAQAAAABAAcAAAAGAAQAAAABAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAcAAAACAAUAAAABAAcAAAADAAUAAAABAAcAAAAEAAUAAAABAAcAAAAFAAUAAAABAAcAAAAGAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAcAAAACAAYAAAABAAcAAAADAAYAAAABAAcAAAAEAAYAAAABAAcAAAAFAAYAAAABAAcAAAAGAAYAAAABAAcAAAA=")
+tile_set = ExtResource("2_qu642")
+
+[node name="PathLayer" type="TileMapLayer" parent="." unique_id=1518530605]
+tile_set = ExtResource("3_aq282")
+
+[node name="StreetLayer" type="TileMapLayer" parent="." unique_id=1380448992]
+tile_set = ExtResource("4_e7ssw")
+
+[node name="NatureLayer" type="TileMapLayer" parent="." unique_id=1339157754]
+y_sort_enabled = true
+tile_set = ExtResource("5_msdli")
+
+[node name="WallLayer" type="TileMapLayer" parent="." unique_id=381186374]
+tile_map_data = PackedByteArray("AAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAAAAAAAAAA=")
+tile_set = ExtResource("6_8wvr5")
+
+[node name="BuildingLayer" type="TileMapLayer" parent="." unique_id=1953361229]
+y_sort_enabled = true
+tile_set = ExtResource("7_rleeh")

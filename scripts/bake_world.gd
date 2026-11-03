@@ -1,4 +1,4 @@
-		@tool
+@tool
 extends EditorScript
 
 ## Genera y guarda en world.tscn TODOS los tiles del mapa y asigna los TileSet.

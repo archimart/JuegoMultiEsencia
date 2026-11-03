@@ -1,0 +1,76 @@
+{
+	"chunk_size": 64,
+	"houses": [
+		{
+			"bounds": {
+				"h": 4,
+				"w": 5,
+				"x": 83,
+				"y": 83
+			},
+			"door_dir": "south"
+		},
+		{
+			"bounds": {
+				"h": 4,
+				"w": 4,
+				"x": 91,
+				"y": 83
+			},
+			"door_dir": "south"
+		},
+		{
+			"bounds": {
+				"h": 5,
+				"w": 5,
+				"x": 108,
+				"y": 84
+			},
+			"door_dir": "south"
+		},
+		{
+			"bounds": {
+				"h": 4,
+				"w": 4,
+				"x": 83,
+				"y": 91
+			},
+			"door_dir": "east"
+		},
+		{
+			"bounds": {
+				"h": 5,
+				"w": 6,
+				"x": 107,
+				"y": 107
+			},
+			"door_dir": "north"
+		}
+	],
+	"markers": {
+		"cave": [],
+		"poi": [
+			{
+				"x": 2528,
+				"y": 1600
+			},
+			{
+				"x": 640,
+				"y": 1920
+			}
+		],
+		"spawn": [
+			{
+				"x": 1584,
+				"y": 1584
+			}
+		]
+	},
+	"tile_px": 16,
+	"world_size": {
+		"chunks_x": 4,
+		"chunks_y": 4,
+		"tiles_h": 200,
+		"tiles_w": 200
+	}
+}

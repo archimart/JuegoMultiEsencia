@@ -1,0 +1,26 @@
+GIMP Palette
+Name: Mundo JuegoMultiPixelArt
+Columns: 4
+#
+# Terrenos (definen la región)
+ 76 175  80	Pasto (praderas)
+ 27  94  32	Pasto+arboles (praderas)
+244 143 177	Pasto rosa (bosque elfico)
+173  20  87	Pasto rosa+arboles (elfico)
+255 255 255	Nieve (montañas)
+117 117 117	Roca+mineral (montañas)
+255 183  77	Arena (tierras aridas)
+ 85 107  47	Pasto oscuro (pantano)
+#
+# Comunes
+ 33 150 243	Agua (no caminable)
+141 110  99	Camino de tierra
+176 190 197	Calle de piedra (pueblo)
+  0   0   0	Muro/acantilado (no caminable)
+244  67  54	Casa (rectangulo)
+#
+# Marcadores (un solo pixel)
+255 152   0	Puerta de casa (borde del rect rojo)
+156  39 176	Entrada de cueva
+255 235  59	Punto de aparicion jugadores
+  0 188 212	Punto de interes

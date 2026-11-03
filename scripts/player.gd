@@ -35,9 +35,15 @@ func setup_race(race: RaceData) -> void:
 	max_hp  = race.max_hp
 	hp      = race.max_hp
 	_speed  = race.speed
-	_walk_tex        = race.walk_tex_path if not race.walk_tex_path.is_empty() else DEFAULT_WALK_TEX
-	_idle_tex        = race.idle_tex_path if not race.idle_tex_path.is_empty() else DEFAULT_IDLE_TEX
-	_sprite_dir_path = race.sprite_dir_path
+	_walk_tex = race.walk_tex_path if not race.walk_tex_path.is_empty() else DEFAULT_WALK_TEX
+	_idle_tex = race.idle_tex_path if not race.idle_tex_path.is_empty() else DEFAULT_IDLE_TEX
+	var gender := GameState.selected_gender
+	if gender == "m" and not race.sprite_dir_path_m.is_empty():
+		_sprite_dir_path = race.sprite_dir_path_m
+	elif not race.sprite_dir_path_f.is_empty():
+		_sprite_dir_path = race.sprite_dir_path_f
+	else:
+		_sprite_dir_path = ""
 	_build_frames()
 	health_changed.emit()
 
@@ -160,6 +166,7 @@ func _build_frames() -> void:
 	if not _sprite_dir_path.is_empty():
 		_build_directional_frames()
 		return
+	_sprite.position = Vector2(0.0, -8.0)
 	var frames := DirectionAnimator.build_4dir_frames(load(_walk_tex), 16, 4, 8.0, "walk")
 	DirectionAnimator.build_4dir_frames(load(_idle_tex), 16, 1, 1.0, "idle", frames)
 	_sprite.sprite_frames = frames
@@ -191,4 +198,5 @@ func _build_directional_frames() -> void:
 		frames.add_frame(idle_anim, load(base + "/Idle/rotations/" + dname + ".png"))
 
 	_sprite.sprite_frames = frames
+	_sprite.position = Vector2(0.0, -13.0)
 	_sprite.play("idle_down")

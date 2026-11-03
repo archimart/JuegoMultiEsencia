@@ -1,128 +1,60 @@
 extends Node2D
 
-# ─── Referencia de tiles (para pintar a mano en el editor) ───────────────────
+# ─── Tiles de referencia (solo para documentación del editor) ─────────────────
 #
-# FloorLayer  →  resources/tilesets/floor_tileset.tres  (TilesetField.png, 5×15)
-#   Pasto interior:  Vector2i(1, 4)  — Terrain 0 "Pasto"
-#   Arena interior:  Vector2i(1, 1)  — Terrain 1 "Arena"
-#   Organización: cada terreno = 5 cols × 3 filas; col 1 = tile interior sólido.
-#   Filas 0-2 arena | 3-5 pasto | 6-8 pasto oscuro | 9-11 rosa | 12-14 nieve
-#
-# NatureLayer → resources/tilesets/nature_tileset.tres  (TilesetNature.png, 24×21)
-#   STANDALONE SEGUROS (pintar sueltos):
-#     Arbustos redondos:  fila 9,  cols 2-10
-#     Flores amarillas:   fila 10, cols 0-1
-#   NO STANDALONE (partes de composición multi-tile):
-#     Árboles grandes: filas 0-5, cols 0-14  (copa 2×3 + tronco)
-#     Rocas grandes:   filas 6-10, cols 15-23
-#
-# PathLayer   →  resources/tilesets/path_tileset.tres   (TilesetFloor.png, 22×26)
-#   Tierra marrón (camino): Vector2i(1, 7) — Terrain 0 "Tierra"
-#   Otros terrenos confirmados (col=1 = tile interior sólido):
-#     Arena naranja Vector2i(1, 1)  | Nieve Vector2i(1, 15) | Agua/hielo Vector2i(1, 22)
-#
-# BuildingLayer → resources/tilesets/building_tileset.tres
-#   Source 0: TilesetHouse.png (33×23)  — edificios japoneses y occidentales
-#   Source 1: TilesetVillageAbandoned.png (20×12) — piedra con musgo
-#   Añadir colisión: abrir el .tres en Inspector → seleccionar tile → Physics → dibujar.
-#
-# CityFloorLayer    → resources/tilesets/city_floor_tileset.tres  (Tiny Town 12×11)
-#   Adoquín gris:    Vector2i(0, 8) — Terrain 0 "Adoquín"
-#
-# CityBuildingLayer → resources/tilesets/city_building_tileset.tres  (Tiny Town 12×11)
-#   Casa naranja: techo Vector2i(4,4) | cumbrera ▽ Vector2i(7,5) | pared Vector2i(1,6)
-#   Casa gris:    techo Vector2i(0,4) | cumbrera ▽ Vector2i(3,5) | pared Vector2i(5,8)
-#   Árbol: Vector2i(3,0)
-#
-# CaveWallLayer  → resources/tilesets/cave_wall_tileset.tres  (Tiny Dungeon 12×11)
-#   Roca con colisión: Vector2i(0,0)   ← único tile con colisión
-#   Resto de tiles: decoración sin colisión, pintables libremente
-#
-# CaveFloorLayer → resources/tilesets/cave_floor_tileset.tres  (Tiny Dungeon 12×11)
-#   Suelo piedra:  Vector2i(0,1)  (sin colisión — el jugador camina sobre él)
+# FloorLayer  →  resources/floor_tileset.tres  (TilesetField.png, 5×15)
+# NatureLayer →  resources/nature_tileset.tres (TilesetNature.png, 24×21)
+# PathLayer   →  resources/path_tileset.tres   (TilesetFloor.png, 22×26)
+# StreetLayer →  resources/city_floor_tileset.tres (Tiny Town 12×11)
+# WallLayer   →  resources/cave_wall_tileset.tres  (Tiny Dungeon 12×11)
+# BuildingLayer → resources/city_building_tileset.tres (Tiny Town 12×11)
+#   Casa naranja: techo (4,4) | cumbrera (4,5)/(7,5)/(6,5) | pared (0,6)/(1,6)/(2,6)
+#   Casa gris:    techo (0,4) | cumbrera (0,5)/(3,5)/(2,5) | pared (4,6)/(5,6)/(6,6)
 
-const MAP_W := 40
-const MAP_H := 25
-
+# ─── Cueva ────────────────────────────────────────────────────────────────────
 const CAVE_OFFSET_X := 4000
 const CAVE_OFFSET_Y := 0
 const CAVE_W        := 40
 const CAVE_H        := 30
 
-# Boca de entrada (mapa principal): sprite 3×3 TilesetReliefDetail cols 3-5, filas 7-9
-#   tile top-left = world tile (34,12); apertura = col 35, fila 13
-#   trigger = pixel (568, 216);  llegada desde cueva = pixel (568, 264)  (+3 filas)
-const _ENT_TL          := Vector2i(34, 12)
-const _ENT_TRIGGER_PX  := Vector2(568.0, 216.0)
-const _WORLD_ARRIVE_PX := Vector2(568.0, 264.0)
+# Boca de entrada al mundo de chunks (tile 99,25 = pixel 1584,400)
+#   Sprite 3×3 top-left = pixel (1568,384);  trigger = fila inferior de la apertura
+const _CAVE_ENT_WORLD_TL := Vector2(1568.0, 384.0)
+const _ENT_TRIGGER_PX    := Vector2(1584.0, 416.0)
+const _WORLD_ARRIVE_PX   := Vector2(1584.0, 448.0)   # reaparece 2 tiles al sur
 
-# Boca de salida (cueva): tile local top-left (18,25)
-#   apertura local fila 27 → world pixel center (4312, 440)
-#   llegada al entrar = pixel (4312, 392)  (−3 filas del trigger)
+# Boca de salida (dentro de la cueva, posición fija en x=4000+)
 const _EXIT_TL_LOCAL   := Vector2i(18, 25)
 const _EXIT_TRIGGER_PX := Vector2(4312.0, 440.0)
 const _CAVE_ARRIVE_PX  := Vector2(4312.0, 392.0)
 
-const INTERACTIVE_TREES: Array[Vector2i] = [
-	Vector2i(8, 6),  Vector2i(12, 5),  Vector2i(15, 8),
-	Vector2i(9, 14), Vector2i(20, 6),  Vector2i(25, 10),
-	Vector2i(30, 7), Vector2i(28, 16), Vector2i(18, 18),
-	Vector2i(10, 19), Vector2i(33, 12), Vector2i(22, 3),
+# Árboles interactivos en el mundo de chunks (fuera del pueblo 80-119, 80-119)
+const _CHUNK_TREES: Array[Vector2i] = [
+	Vector2i(20, 12), Vector2i(30, 8),   Vector2i(45, 15),
+	Vector2i(12, 28), Vector2i(35, 22),  Vector2i(55, 30),
+	Vector2i(70, 18), Vector2i(15, 50),  Vector2i(60, 55),
+	Vector2i(130, 25),Vector2i(150, 40), Vector2i(165, 20),
+	Vector2i(30, 130),Vector2i(50, 150), Vector2i(170, 160),
 ]
 
-# Posiciones de minas en la cueva (coordenadas locales de tile dentro de la cueva)
+# Minas de la cueva (coordenadas locales de tile)
 const _ORE_TILES := [
-	Vector2i(17,20), Vector2i(21,22), Vector2i(23,25),  # R1 Sala Entrada
-	Vector2i(10,11), Vector2i(14,12),                    # R2 Sala Explorador
-	Vector2i(3,16),  Vector2i(6,20),                     # R3 Caverna Oeste
-	Vector2i(31,20), Vector2i(34,23),                    # R4 Alcoba Este
-	Vector2i(35,10),                                     # DE2 Alcoba NE (rara)
+	Vector2i(17,20), Vector2i(21,22), Vector2i(23,25),
+	Vector2i(10,11), Vector2i(14,12),
+	Vector2i(3,16),  Vector2i(6,20),
+	Vector2i(31,20), Vector2i(34,23),
+	Vector2i(35,10),
 ]
-
-# Texturas para generación de tiles en runtime
-const _A_FIELD := "res://assets/Backgrounds/Tilesets/TilesetField.png"
-const _A_FLRX  := "res://assets/Backgrounds/Tilesets/TilesetFloor.png"
-const _A_NAT   := "res://assets/Backgrounds/Tilesets/TilesetNature.png"
-const _A_HOUSE := "res://assets/Backgrounds/Tilesets/TilesetHouse.png"
-const _A_TD    := "res://assets/kenney/kenney_tiny-dungeon/Tilemap/tilemap_packed.png"
-const _A_TT    := "res://assets/kenney/kenney_tiny-town/Tilemap/tilemap_packed.png"
-
-const _GRASS  := Vector2i(1, 4)
-const _CWALL  := Vector2i(0, 0)
-const _CFLOOR := Vector2i(0, 1)
-const _ADO    := Vector2i(0, 8)
-const _CAVE_OX := 250   # CAVE_OFFSET_X / 16
-
-const _CAVE_RECTS := [
-	Rect2i(14,17,12,11), Rect2i(8,9,9,6),   Rect2i(1,12,9,12),
-	Rect2i(29,16,9,11),  Rect2i(5,2,9,5),   Rect2i(15,15,3,2),
-	Rect2i(10,19,4,3),   Rect2i(26,19,3,3), Rect2i(9,7,3,2),
-	Rect2i(33,14,3,2),   Rect2i(1,7,4,5),   Rect2i(33,8,5,6),
-]
-
-# Ciudad (Pueblo) — al oeste del mundo principal
-const CITY_OFFSET_X := -2000   # borde izquierdo en píxeles
-const CITY_W        := 30      # tiles de ancho
-const CITY_H        := 25      # tiles de alto (igual que el mundo)
-const CITY_OX       := -125    # CITY_OFFSET_X / 16 en tiles
-
-const _CITY_ENTER_PX      := Vector2(4.0,     200.0)    # trigger borde izq del mundo
-const _CITY_ARRIVE_PX     := Vector2(-1552.0, 200.0)    # llegada dentro de la ciudad
-const _CITY_EXIT_PX       := Vector2(-1528.0, 200.0)    # trigger salida (lado derecho ciudad)
-const _WORLD_FROM_CITY_PX := Vector2(24.0,    200.0)    # llegada al volver al mundo
 
 @onready var _player:    Node2D = $Player
 @onready var _companion          = $Companion
 
-var _cave_modulate:  CanvasModulate = null
-var _cave_light:     PointLight2D   = null
-var _cave_ent_area:  Area2D         = null
-var _cave_exit_area:  Area2D = null
-var _town_enter_area: Area2D = null
-var _town_exit_area:  Area2D = null
-var _in_cave:         bool   = false
-var _in_town:         bool   = false
-var _transitioning:   bool   = false
+var _cave_modulate:   CanvasModulate = null
+var _cave_light:      PointLight2D   = null
+var _cave_ent_area:   Area2D         = null
+var _cave_exit_area:  Area2D         = null
+var _in_cave:         bool           = false
+var _transitioning:   bool           = false
 
 var _tree_scene:      PackedScene = preload("res://scenes/tree.tscn")
 var _table_scene:     PackedScene = preload("res://scenes/crafting_table.tscn")
@@ -133,20 +65,24 @@ var _safe_zone_scene: PackedScene = preload("res://scenes/safe_zone.tscn")
 var _city_npc_scene:  PackedScene = preload("res://scenes/city_npc.tscn")
 var _ore_node_scene:  PackedScene = preload("res://scenes/ore_node.tscn")
 
+var _chunk_world:   bool         = false
+var _surface_cm:    ChunkManager = null
+var _cave_cm:       ChunkManager = null
+var _debug_overlay: CanvasLayer  = null
+
 
 func _ready() -> void:
+	_chunk_world = FileAccess.file_exists(
+		ProjectSettings.globalize_path("res://scenes/chunks/chunk_0_0_0.tscn"))
 	if not has_node("/root/FX") or not has_node("/root/SFX"):
-		push_error("[World] Autoloads FX/SFX no encontrados. Recarga el proyecto (Project → Reload Current Project).")
+		push_error("[World] Autoloads FX/SFX no encontrados. Recarga el proyecto.")
 	_register_input_actions()
-	_ensure_tiles()
-	_add_border_walls()
-	_spawn_interactive_trees()
-	_spawn_safe_zone()
+	if not _chunk_world:
+		_show_no_chunks_error()
+		return
 	_build_cave_zone()
-	_build_town_zone()
-	_spawn_city_npcs()
-	_spawn_crafting_table()
-	_spawn_chest()
+	_spawn_chunk_world_objects()
+	_spawn_interactive_trees()
 	_spawn_spawner()
 	_spawn_cave_ores()
 	var race = GameState.selected_race
@@ -157,11 +93,100 @@ func _ready() -> void:
 		_companion.data = preload("res://resources/companion_hawk.tres")
 	_spawn_hud()
 	_companion.set_target(_player)
+	_init_chunk_managers()
 
+
+func _show_no_chunks_error() -> void:
+	var cl := CanvasLayer.new()
+	cl.layer = 100
+	var label := Label.new()
+	label.text = "ERROR: No se encontraron chunks del mundo.\n\nEjecutar scripts/bake_chunks.gd desde el editor:\n  1. Abrir world.tscn\n  2. Script Editor → File → Open → bake_chunks.gd\n  3. Presionar ▶ (Run)"
+	label.add_theme_color_override("font_color", Color.RED)
+	label.add_theme_font_size_override("font_size", 14)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	cl.add_child(label)
+	add_child(cl)
+	push_error("[World] chunk_0_0_0.tscn no existe. Ejecutar bake_chunks.gd primero.")
+
+
+# ─── Chunk Managers ───────────────────────────────────────────────────────────
+
+func _init_chunk_managers() -> void:
+	var spawn := _chunk_read_spawn()
+	if spawn != Vector2.ZERO:
+		_player.global_position    = spawn
+		_companion.global_position = spawn + Vector2(16.0, 0.0)
+
+	var world_px := _chunk_world_px()
+	var cam: Camera2D = _player.get_node_or_null("Camera2D")
+	if cam:
+		cam.limit_left   = 0
+		cam.limit_right  = world_px.x
+		cam.limit_top    = 0
+		cam.limit_bottom = world_px.y
+
+	_surface_cm = preload("res://scripts/chunk_manager.gd").new()
+	_surface_cm.name         = "ChunkManager"
+	_surface_cm.layer        = 0
+	_surface_cm.world_offset = Vector2.ZERO
+	add_child(_surface_cm)
+
+	var cave_path := ProjectSettings.globalize_path("res://scenes/chunks/chunk_1_0_0.tscn")
+	if FileAccess.file_exists(cave_path):
+		_cave_cm = preload("res://scripts/chunk_manager.gd").new()
+		_cave_cm.name         = "CaveChunkManager"
+		_cave_cm.layer        = 1
+		_cave_cm.world_offset = Vector2(float(CAVE_OFFSET_X), float(CAVE_OFFSET_Y))
+		add_child(_cave_cm)
+		_cave_cm.set_layer_active(false)
+	else:
+		push_warning("[World] chunk_1_0_0.tscn no encontrado. Ejecutar gen_cave_chunk.gd.")
+
+	print("[World] Chunks iniciados — mundo %d×%d px, spawn %s, cueva=%s" % [
+		world_px.x, world_px.y, spawn, _cave_cm != null])
+
+
+func _chunk_read_spawn() -> Vector2:
+	const PATH := "res://resources/world_data.json"
+	if not FileAccess.file_exists(ProjectSettings.globalize_path(PATH)):
+		return Vector2.ZERO
+	var f := FileAccess.open(PATH, FileAccess.READ)
+	if f == null:
+		return Vector2.ZERO
+	var data = JSON.parse_string(f.get_as_text())
+	f.close()
+	if not data is Dictionary:
+		return Vector2.ZERO
+	var spawns: Array = data.get("markers", {}).get("spawn", [])
+	if spawns.is_empty():
+		return Vector2.ZERO
+	var s: Dictionary = spawns[0]
+	return Vector2(float(s.get("x", 0)), float(s.get("y", 0)))
+
+
+func _chunk_world_px() -> Vector2i:
+	const PATH := "res://resources/world_data.json"
+	if not FileAccess.file_exists(ProjectSettings.globalize_path(PATH)):
+		return Vector2i(3200, 3200)
+	var f := FileAccess.open(PATH, FileAccess.READ)
+	if f == null:
+		return Vector2i(3200, 3200)
+	var data = JSON.parse_string(f.get_as_text())
+	f.close()
+	if not data is Dictionary:
+		return Vector2i(3200, 3200)
+	var ws: Dictionary = data.get("world_size", {})
+	return Vector2i(ws.get("tiles_w", 200) * 16, ws.get("tiles_h", 200) * 16)
+
+
+# ─── Loop y entrada ───────────────────────────────────────────────────────────
 
 func _process(_delta: float) -> void:
 	if _cave_light != null and _cave_light.visible:
 		_cave_light.global_position = _player.global_position
+	_update_debug_overlay()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -170,17 +195,47 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	match event.keycode:
-		KEY_F3:
-			print_rich("[color=cyan][DEBUG F3] Día/noche: no implementado aún[/color]")
-		KEY_F4:
-			print_rich("[color=cyan][DEBUG F4] Jefe: no implementado aún[/color]")
-		KEY_F5:
-			print_rich("[color=cyan][DEBUG F5] Objeto raro: no implementado aún[/color]")
-		KEY_F6:
-			print_rich("[color=cyan][DEBUG F6] Ataque al pueblo: no implementado aún[/color]")
+		KEY_F3: _toggle_debug_overlay()
 		KEY_F7:
 			_companion.add_xp(10)
 			print_rich("[color=cyan][DEBUG F7] +10 XP al compañero[/color]")
+
+
+func _toggle_debug_overlay() -> void:
+	if _debug_overlay != null:
+		_debug_overlay.queue_free()
+		_debug_overlay = null
+		return
+	_debug_overlay = CanvasLayer.new()
+	_debug_overlay.layer = 90
+	var label := Label.new()
+	label.name = "Info"
+	label.position = Vector2(6.0, 6.0)
+	label.add_theme_color_override("font_color", Color.CYAN)
+	label.add_theme_font_size_override("font_size", 9)
+	_debug_overlay.add_child(label)
+	add_child(_debug_overlay)
+	_update_debug_overlay()
+
+
+func _update_debug_overlay() -> void:
+	if _debug_overlay == null:
+		return
+	var label := _debug_overlay.get_node_or_null("Info") as Label
+	if label == null:
+		return
+	var cm: ChunkManager = _cave_cm if _in_cave else _surface_cm
+	var layer_str  := "mina" if _in_cave else "superficie"
+	var chunk_str  := "—"
+	var n_loaded   := 0
+	var coords_str := ""
+	if cm != null:
+		var cc: Vector2i = cm.world_to_chunk(_player.global_position)
+		chunk_str  = str(cc)
+		n_loaded   = cm.loaded_count()
+		coords_str = cm.loaded_coords_str()
+	label.text = "[ F3 — Chunks Debug ]\nCapa: %s  |  Chunk: %s\nCargados: %d\n%s" % [
+		layer_str, chunk_str, n_loaded, coords_str]
 
 
 func _register_input_actions() -> void:
@@ -189,7 +244,6 @@ func _register_input_actions() -> void:
 		var ev := InputEventKey.new()
 		ev.keycode = KEY_E
 		InputMap.action_add_event("interact", ev)
-
 	if not InputMap.has_action("shoot"):
 		InputMap.add_action("shoot")
 		var ev := InputEventMouseButton.new()
@@ -197,47 +251,42 @@ func _register_input_actions() -> void:
 		InputMap.action_add_event("shoot", ev)
 
 
-func _add_border_walls() -> void:
-	var body := StaticBody2D.new()
-	add_child(body)
-	var walls := [
-		[Vector2(MAP_W * 16 + 32, 16), Vector2(MAP_W * 8,      -8)],
-		[Vector2(MAP_W * 16 + 32, 16), Vector2(MAP_W * 8,      MAP_H * 16 + 8)],
-		[Vector2(16, MAP_H * 16 + 32), Vector2(-8,             MAP_H * 8)],
-		[Vector2(16, MAP_H * 16 + 32), Vector2(MAP_W * 16 + 8, MAP_H * 8)],
-	]
-	for wall: Array in walls:
-		var shape := CollisionShape2D.new()
-		var rect  := RectangleShape2D.new()
-		rect.size      = wall[0]
-		shape.position = wall[1]
-		shape.shape    = rect
-		body.add_child(shape)
+# ─── Objetos del pueblo central ───────────────────────────────────────────────
+
+func _spawn_chunk_world_objects() -> void:
+	# Zona segura centrada en el pueblo (tile 99,99 = pixel 1584,1584)
+	var zone: Node2D = _safe_zone_scene.instantiate()
+	zone.position = Vector2(1584.0, 1584.0)
+	add_child(zone)
+
+	# Mesa de crafteo y cofre al sur del centro (tile 96,103 y 98,103)
+	var table: Node2D = _table_scene.instantiate()
+	table.position = Vector2(1536.0, 1648.0)
+	add_child(table)
+
+	var chest: Node2D = _chest_scene.instantiate()
+	chest.position = Vector2(1568.0, 1648.0)
+	add_child(chest)
+
+	# NPCs a ambos lados del centro (tiles 94,100 y 104,100)
+	var merchant: CityNPC = _city_npc_scene.instantiate()
+	merchant.npc_name     = "Comerciante"
+	merchant.atlas_region = Rect2(0, 96, 16, 16)
+	merchant.position     = Vector2(1504.0, 1600.0)
+	add_child(merchant)
+
+	var sage: CityNPC = _city_npc_scene.instantiate()
+	sage.npc_name     = "Sabio"
+	sage.atlas_region = Rect2(0, 112, 16, 16)
+	sage.position     = Vector2(1664.0, 1600.0)
+	add_child(sage)
 
 
 func _spawn_interactive_trees() -> void:
-	for tile_pos: Vector2i in INTERACTIVE_TREES:
+	for tile: Vector2i in _CHUNK_TREES:
 		var tree: Node2D = _tree_scene.instantiate()
-		tree.position = Vector2(tile_pos.x * 16 + 8, tile_pos.y * 16 + 8)
+		tree.position = Vector2(tile.x * 16.0 + 8.0, tile.y * 16.0 + 8.0)
 		add_child(tree)
-
-
-func _spawn_safe_zone() -> void:
-	var zone: Node2D = _safe_zone_scene.instantiate()
-	zone.position = Vector2(80.0, 64.0)
-	add_child(zone)
-
-
-func _spawn_crafting_table() -> void:
-	var table: Node2D = _table_scene.instantiate()
-	table.position = Vector2(5 * 16 + 8, 4 * 16 + 8)
-	add_child(table)
-
-
-func _spawn_chest() -> void:
-	var chest: Node2D = _chest_scene.instantiate()
-	chest.position = Vector2(7 * 16 + 8, 4 * 16 + 8)
-	add_child(chest)
 
 
 func _spawn_spawner() -> void:
@@ -251,45 +300,28 @@ func _spawn_hud() -> void:
 	hud.set_companion(_companion)
 
 
-func _spawn_city_npcs() -> void:
-	var merchant: CityNPC = _city_npc_scene.instantiate()
-	merchant.npc_name     = "Comerciante"
-	merchant.atlas_region = Rect2(0, 96, 16, 16)
-	merchant.position     = Vector2(2 * 16 + 8, 5 * 16 + 8)
-	add_child(merchant)
-
-	var quest_npc: CityNPC = _city_npc_scene.instantiate()
-	quest_npc.npc_name    = "Sabio"
-	quest_npc.atlas_region = Rect2(0, 112, 16, 16)
-	quest_npc.position    = Vector2(7 * 16 + 8, 5 * 16 + 8)
-	add_child(quest_npc)
-
-
-# ─── Cueva (solo elementos dinámicos: sprites, triggers, iluminación) ─────────
-# Los tiles de paredes y suelo de la cueva están baked en world.tscn.
-# Ejecutar scripts/bake_world.gd si necesitas regenerarlos.
+# ─── Cueva (sprites, triggers, iluminación — tiles vienen de chunk_1_0_0) ─────
 
 func _build_cave_zone() -> void:
-	# ── Boca de salida (dentro de la cueva) ───────────────────────────────────
+	# Boca de salida dentro de la cueva (posición fija al lado de x=4000)
 	var exit_tl := Vector2(
 		float(CAVE_OFFSET_X) + float(_EXIT_TL_LOCAL.x) * 16.0,
 		float(CAVE_OFFSET_Y) + float(_EXIT_TL_LOCAL.y) * 16.0
 	)
 	_place_cave_mouth(exit_tl)
-	_add_cave_mouth_walls(exit_tl, false)   # sin techo — el jugador sale desde arriba
+	_add_cave_mouth_walls(exit_tl, false)
 	_cave_exit_area = _make_trigger_area(_EXIT_TRIGGER_PX)
 	_cave_exit_area.body_entered.connect(_on_cave_exit_body_entered)
 	add_child(_cave_exit_area)
 
-	# ── Boca de entrada (mapa principal) ──────────────────────────────────────
-	var ent_tl := Vector2(float(_ENT_TL.x) * 16.0, float(_ENT_TL.y) * 16.0)
-	_place_cave_mouth(ent_tl)
-	_add_cave_mouth_walls(ent_tl)
+	# Boca de entrada en el mundo de chunks (norte del pueblo, tile 99,25)
+	_place_cave_mouth(_CAVE_ENT_WORLD_TL)
+	_add_cave_mouth_walls(_CAVE_ENT_WORLD_TL)
 	_cave_ent_area = _make_trigger_area(_ENT_TRIGGER_PX)
 	_cave_ent_area.body_entered.connect(_on_cave_entrance_body_entered)
 	add_child(_cave_ent_area)
 
-	# ── Iluminación (local por cliente, no sincronizada) ──────────────────────
+	# Iluminación de cueva (local, no sincronizada)
 	_cave_modulate = CanvasModulate.new()
 	_cave_modulate.color = Color(1.0, 1.0, 1.0)
 	add_child(_cave_modulate)
@@ -322,8 +354,8 @@ func _add_cave_mouth_walls(world_tl: Vector2, add_top_wall: bool = true) -> void
 	body.collision_mask  = 0
 	add_child(body)
 	var walls: Array = [
-		[Vector2(16.0, 48.0), world_tl + Vector2(8.0,  24.0)],   # columna izq
-		[Vector2(16.0, 48.0), world_tl + Vector2(40.0, 24.0)],   # columna der
+		[Vector2(16.0, 48.0), world_tl + Vector2(8.0,  24.0)],
+		[Vector2(16.0, 48.0), world_tl + Vector2(40.0, 24.0)],
 	]
 	if add_top_wall:
 		walls.append([Vector2(48.0, 16.0), world_tl + Vector2(24.0, 8.0)])
@@ -393,6 +425,17 @@ func _do_cave_transition(arrive_pos: Vector2, enter_cave: bool) -> void:
 	_companion.position = arrive_pos + Vector2(-16.0, 0.0)
 	_player.velocity    = Vector2.ZERO
 
+	# Intercambiar capas mientras la pantalla está en negro
+	if enter_cave and _cave_cm != null:
+		_cave_cm.preload_around(arrive_pos)
+		_surface_cm.set_layer_active(false)
+		_cave_cm.set_layer_active(true)
+	elif not enter_cave and _surface_cm != null:
+		_surface_cm.preload_around(arrive_pos)
+		if _cave_cm != null:
+			_cave_cm.set_layer_active(false)
+		_surface_cm.set_layer_active(true)
+
 	var cam: Camera2D = _player.get_node("Camera2D")
 	if enter_cave:
 		cam.limit_left   = CAVE_OFFSET_X
@@ -403,10 +446,11 @@ func _do_cave_transition(arrive_pos: Vector2, enter_cave: bool) -> void:
 		_cave_light.visible         = true
 		_cave_light.global_position = _player.global_position
 	else:
+		var wpx := _chunk_world_px()
 		cam.limit_left   = 0
-		cam.limit_right  = MAP_W * 16
+		cam.limit_right  = wpx.x
 		cam.limit_top    = 0
-		cam.limit_bottom = MAP_H * 16
+		cam.limit_bottom = wpx.y
 		_cave_modulate.color = Color(1.0, 1.0, 1.0)
 		_cave_light.visible  = false
 
@@ -420,222 +464,8 @@ func _do_cave_transition(arrive_pos: Vector2, enter_cave: bool) -> void:
 	_transitioning = false
 
 
-# ── Minas de la cueva ─────────────────────────────────────────────────────────
-
 func _spawn_cave_ores() -> void:
 	for tp: Vector2i in _ORE_TILES:
 		var ore: Node2D = _ore_node_scene.instantiate()
 		ore.position = Vector2(CAVE_OFFSET_X + tp.x * 16.0 + 8.0, tp.y * 16.0 + 8.0)
 		add_child(ore)
-
-
-# ── Generación de tiles en runtime (solo si bake_world.gd no se ha ejecutado) ─
-
-func _ensure_tiles() -> void:
-	var fl: TileMapLayer = $FloorLayer
-	if fl.tile_set != null and not fl.get_used_cells().is_empty():
-		return
-
-	fl.tile_set = _rt_simple_ts(_A_FIELD, 5, 15)
-	($NatureLayer       as TileMapLayer).tile_set = _rt_simple_ts(_A_NAT,   24, 21)
-	($PathLayer         as TileMapLayer).tile_set = _rt_simple_ts(_A_FLRX,  22, 26)
-	($BuildingLayer     as TileMapLayer).tile_set = _rt_simple_ts(_A_HOUSE, 33, 23)
-	($CityFloorLayer    as TileMapLayer).tile_set = _rt_simple_ts(_A_TT,    12, 11)
-	($CaveFloorLayer    as TileMapLayer).tile_set = _rt_simple_ts(_A_TD,    12, 11)
-
-	var ts_cb := TileSet.new()
-	ts_cb.tile_size = Vector2i(16, 16)
-	ts_cb.add_physics_layer()
-	ts_cb.set_physics_layer_collision_layer(0, 1)
-	var src_cb := _rt_atlas(ts_cb, _A_TT, 12, 11)
-	var poly_sq := PackedVector2Array([
-		Vector2(-8.0,-8.0), Vector2(8.0,-8.0), Vector2(8.0,8.0), Vector2(-8.0,8.0)])
-	for c: int in [0, 1, 2]:   # paredes casa naranja (fila 6)
-		var td := src_cb.get_tile_data(Vector2i(c, 6), 0)
-		td.set_collision_polygons_count(0, 1)
-		td.set_collision_polygon_points(0, 0, poly_sq)
-	for c: int in [4, 5, 6]:   # paredes casa gris (fila 8)
-		var td := src_cb.get_tile_data(Vector2i(c, 8), 0)
-		td.set_collision_polygons_count(0, 1)
-		td.set_collision_polygon_points(0, 0, poly_sq)
-	($CityBuildingLayer as TileMapLayer).tile_set = ts_cb
-
-	var ts_cw := TileSet.new()
-	ts_cw.tile_size = Vector2i(16, 16)
-	ts_cw.add_physics_layer()
-	ts_cw.set_physics_layer_collision_layer(0, 1)
-	var src_cw := _rt_atlas(ts_cw, _A_TD, 12, 11)
-	var td_w: TileData = src_cw.get_tile_data(_CWALL, 0)
-	td_w.set_collision_polygons_count(0, 1)
-	td_w.set_collision_polygon_points(0, 0, poly_sq)
-	($CaveWallLayer as TileMapLayer).tile_set = ts_cw
-
-	for y: int in MAP_H:
-		for x: int in MAP_W:
-			fl.set_cell(Vector2i(x, y), 0, _GRASS)
-	_rt_gen_city()
-	_rt_gen_cave()
-	_rt_gen_town()
-
-
-func _rt_simple_ts(tex: String, cols: int, rows: int) -> TileSet:
-	var ts := TileSet.new()
-	ts.tile_size = Vector2i(16, 16)
-	_rt_atlas(ts, tex, cols, rows)
-	return ts
-
-
-func _rt_atlas(ts: TileSet, tex: String, cols: int, rows: int, id: int = 0) -> TileSetAtlasSource:
-	var src := TileSetAtlasSource.new()
-	src.texture = load(tex)
-	src.texture_region_size = Vector2i(16, 16)
-	ts.add_source(src, id)
-	for r: int in rows:
-		for c: int in cols:
-			src.create_tile(Vector2i(c, r))
-	return src
-
-
-func _rt_gen_cave() -> void:
-	var cwl:  TileMapLayer = $CaveWallLayer
-	var cfll: TileMapLayer = $CaveFloorLayer
-	for y: int in CAVE_H:
-		for x: int in CAVE_W:
-			cwl.set_cell(Vector2i(_CAVE_OX + x, y), 0, _CWALL)
-	for r: Rect2i in _CAVE_RECTS:
-		for dy: int in r.size.y:
-			for dx: int in r.size.x:
-				var wx := _CAVE_OX + r.position.x + dx
-				var wy := r.position.y + dy
-				cwl.erase_cell(Vector2i(wx, wy))
-				cfll.set_cell(Vector2i(wx, wy), 0, _CFLOOR)
-
-
-func _rt_gen_city() -> void:
-	var cfl: TileMapLayer = $CityFloorLayer
-	var cbl: TileMapLayer = $CityBuildingLayer
-	var h1r := [Vector2i(4,4), Vector2i(4,4), Vector2i(4,4)]
-	var h1g := [Vector2i(4,5), Vector2i(7,5), Vector2i(6,5)]
-	var h1w := [Vector2i(0,6), Vector2i(1,6), Vector2i(2,6)]
-	var h2r := [Vector2i(0,4), Vector2i(0,4), Vector2i(0,4)]
-	var h2g := [Vector2i(0,5), Vector2i(3,5), Vector2i(2,5)]
-	var h2w := [Vector2i(4,8), Vector2i(5,8), Vector2i(6,8)]
-	for i: int in 3:
-		cbl.set_cell(Vector2i(1 + i, 1), 0, h1r[i])
-		cbl.set_cell(Vector2i(1 + i, 2), 0, h1g[i])
-		cbl.set_cell(Vector2i(1 + i, 3), 0, h1w[i])
-		cbl.set_cell(Vector2i(6 + i, 1), 0, h2r[i])
-		cbl.set_cell(Vector2i(6 + i, 2), 0, h2g[i])
-		cbl.set_cell(Vector2i(6 + i, 3), 0, h2w[i])
-	for x: int in 10:
-		cfl.set_cell(Vector2i(x, 4), 0, _ADO)
-	cbl.set_cell(Vector2i(0, 2), 0, Vector2i(3, 0))
-	cbl.set_cell(Vector2i(9, 2), 0, Vector2i(3, 0))
-
-
-func _rt_gen_town() -> void:
-	var cfl: TileMapLayer = $CityFloorLayer
-	for y: int in CITY_H:
-		for x: int in CITY_W:
-			cfl.set_cell(Vector2i(CITY_OX + x, y), 0, _ADO)
-
-
-# ── Ciudad / Pueblo ───────────────────────────────────────────────────────────
-
-func _build_town_zone() -> void:
-	_town_enter_area = _make_trigger_area(_CITY_ENTER_PX, Vector2(10.0, 80.0))
-	_town_enter_area.body_entered.connect(_on_town_enter_body_entered)
-	add_child(_town_enter_area)
-
-	_town_exit_area = _make_trigger_area(_CITY_EXIT_PX, Vector2(10.0, 80.0))
-	_town_exit_area.body_entered.connect(_on_town_exit_body_entered)
-	add_child(_town_exit_area)
-
-	_place_building(
-		"res://assets/utils/pueblo/Gremio 64x64.png",
-		Vector2(float(CITY_OFFSET_X) + 100.0, 192.0),
-		Vector2(0.0, -32.0), Vector2(56.0, 52.0))
-
-	_place_building(
-		"res://assets/utils/pueblo/Mercaderes 128x128.png",
-		Vector2(float(CITY_OFFSET_X) + 290.0, 224.0),
-		Vector2(0.0, -64.0), Vector2(110.0, 90.0))
-
-
-func _place_building(tex_path: String, base_pos: Vector2,
-		spr_offset: Vector2, coll_size: Vector2) -> void:
-	var node := Node2D.new()
-	node.position = base_pos
-
-	var spr := Sprite2D.new()
-	spr.texture        = load(tex_path)
-	spr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	spr.offset         = spr_offset
-	node.add_child(spr)
-
-	var body := StaticBody2D.new()
-	body.collision_layer = 1
-	body.collision_mask  = 0
-	var sh   := CollisionShape2D.new()
-	var rect := RectangleShape2D.new()
-	rect.size      = coll_size
-	sh.position    = Vector2(0.0, spr_offset.y)
-	sh.shape       = rect
-	body.add_child(sh)
-	node.add_child(body)
-
-	add_child(node)
-
-
-func _on_town_enter_body_entered(body: Node2D) -> void:
-	if not body.is_in_group("player") or body != _player or _transitioning:
-		return
-	_transitioning = true
-	_do_town_transition(_CITY_ARRIVE_PX, true)
-
-
-func _on_town_exit_body_entered(body: Node2D) -> void:
-	if not body.is_in_group("player") or body != _player or _transitioning:
-		return
-	_transitioning = true
-	_do_town_transition(_WORLD_FROM_CITY_PX, false)
-
-
-func _do_town_transition(arrive_pos: Vector2, enter_town: bool) -> void:
-	var overlay := CanvasLayer.new()
-	overlay.layer = 99
-	var rect := ColorRect.new()
-	rect.color    = Color(0.0, 0.0, 0.0, 0.0)
-	rect.size     = Vector2(640.0, 360.0)
-	rect.position = Vector2.ZERO
-	overlay.add_child(rect)
-	add_child(overlay)
-
-	var tw1 := create_tween()
-	tw1.tween_property(rect, "color:a", 1.0, 0.3)
-	await tw1.finished
-
-	_player.position    = arrive_pos
-	_companion.position = arrive_pos + Vector2(16.0, 0.0)
-	_player.velocity    = Vector2.ZERO
-
-	var cam: Camera2D = _player.get_node("Camera2D")
-	if enter_town:
-		cam.limit_left   = CITY_OFFSET_X
-		cam.limit_right  = CITY_OFFSET_X + CITY_W * 16
-		cam.limit_top    = 0
-		cam.limit_bottom = CITY_H * 16
-	else:
-		cam.limit_left   = 0
-		cam.limit_right  = MAP_W * 16
-		cam.limit_top    = 0
-		cam.limit_bottom = MAP_H * 16
-
-	_in_town = enter_town
-
-	var tw2 := create_tween()
-	tw2.tween_property(rect, "color:a", 0.0, 0.3)
-	await tw2.finished
-
-	overlay.queue_free()
-	_transitioning = false
