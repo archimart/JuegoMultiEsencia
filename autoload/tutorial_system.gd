@@ -2,7 +2,7 @@ extends Node
 
 # Pasos del tutorial en orden. Cada uno tiene id, condición y mensaje.
 # La condición se evalúa externamente llamando trigger(step_id).
-const STEPS: Array[Dictionary] = [
+const STEPS: Array = [
 	{ "id": "move",      "msg": "Muévete con WASD  |  Ataca con clic izquierdo" },
 	{ "id": "inventory", "msg": "Abre el inventario con [I]  |  Equipa armas con clic derecho" },
 	{ "id": "wood",      "msg": "Acércate a la mesa de crafteo y presiona [E] para fabricar" },
@@ -32,9 +32,10 @@ func trigger(step_id: String) -> void:
 
 
 func _show_step(step_id: String) -> void:
-	for s: Dictionary in STEPS:
-		if s["id"] == step_id:
-			tip_requested.emit(s["msg"])
+	for s in STEPS:
+		var step := s as Dictionary
+		if step["id"] == step_id:
+			tip_requested.emit(step["msg"])
 			return
 
 
@@ -42,8 +43,8 @@ func _load() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(_cfg_path) != OK:
 		return
-	for s: Dictionary in STEPS:
-		var id: String = s["id"]
+	for s in STEPS:
+		var id: String = (s as Dictionary)["id"]
 		_done[id] = cfg.get_value("done", id, false)
 
 

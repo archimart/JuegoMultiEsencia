@@ -229,7 +229,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if OS.is_debug_build():
 		match event.keycode:
 			KEY_F3: _toggle_debug_overlay()
-	if event.is_action_pressed("ui_cancel") and not UIManager.is_menu_open() \
+	var _ui_open: bool = has_node("/root/UIManager") and UIManager.is_menu_open()
+	if event.is_action_pressed("ui_cancel") and not _ui_open \
 			and (_pause_menu == null or not is_instance_valid(_pause_menu)):
 		get_viewport().set_input_as_handled()
 		_open_pause()

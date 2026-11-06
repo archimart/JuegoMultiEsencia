@@ -52,7 +52,7 @@ func _refresh() -> void:
 
 
 func _build_buy_rows() -> void:
-	for entry: Dictionary in BUY_CATALOG:
+	for entry in BUY_CATALOG:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 4)
 
@@ -82,7 +82,7 @@ func _build_buy_rows() -> void:
 
 
 func _build_sell_rows() -> void:
-	for entry: Dictionary in SELL_CATALOG:
+	for entry in SELL_CATALOG:
 		var id: String    = entry["id"]
 		var have: int     = int(_player.inventory.get(id, 0))
 		if have <= 0:

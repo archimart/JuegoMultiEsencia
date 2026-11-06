@@ -53,7 +53,7 @@ func _build_row(recipe: RecipeData) -> HBoxContainer:
 
 	var ingr_row := HBoxContainer.new()
 	ingr_row.add_theme_constant_override("separation", 3)
-	var inv := _player.inventory if _player != null else {}
+	var inv: Dictionary = _player.inventory if _player != null else {}
 	for ing_id: String in recipe.ingredients:
 		var needed: int = recipe.ingredients[ing_id]
 		var have:   int = int(inv.get(ing_id, 0))

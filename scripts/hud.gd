@@ -1265,8 +1265,8 @@ func _make_slot_tooltip(item_id: String, amt: int, is_equipped: bool) -> String:
 	var wpn_path := "res://resources/weapon_%s.tres" % item_id
 	if ResourceLoader.exists(wpn_path):
 		var w: Resource = load(wpn_path)
-		lines.append("Daño: %d  |  Rango: %gpx" % [int(w.get("damage")), float(w.get("range_px"))])
-		lines.append("Cooldown: %gs  |  Clic derecho para equipar" % float(w.get("cooldown")))
+		lines.append("Daño: %d  |  Rango: %dpx" % [int(w.get("damage")), int(w.get("range_px"))])
+		lines.append("Cooldown: %.2fs  |  Clic derecho para equipar" % [float(w.get("cooldown"))])
 	elif item_id == "health_potion":
 		lines.append("+20 HP al usar")
 		lines.append("Presiona [H] para usar")
@@ -1275,7 +1275,7 @@ func _make_slot_tooltip(item_id: String, amt: int, is_equipped: bool) -> String:
 		lines.append("Necesario para minar vetas")
 	elif item_id.begins_with("egg_"):
 		var mid := item_id.substr(4)
-		var rar := FamiliarSystem.get_egg_rarity(mid) if has_node("/root/FamiliarSystem") else {}
+		var rar: Dictionary = FamiliarSystem.get_egg_rarity(mid) if has_node("/root/FamiliarSystem") else {}
 		var kills: int = int(FamiliarSystem.egg_kills.get(item_id, 0)) if has_node("/root/FamiliarSystem") else 0
 		var needed: int = FamiliarSystem.KILLS_TO_HATCH if has_node("/root/FamiliarSystem") else 10
 		lines.append("Rareza: %s" % rar.get("rarity", "común").capitalize())
