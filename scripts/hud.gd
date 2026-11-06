@@ -114,6 +114,8 @@ func set_player(p: Node2D) -> void:
 		p.class_changed.connect(_on_class_changed)
 	if p.has_signal("mana_changed"):
 		p.mana_changed.connect(_update_mana)
+	if p.has_signal("died"):
+		p.died.connect(_on_player_died)
 	_refresh()
 	_update_hp()
 	_update_player_level(p.get("level") if p.get("level") != null else 1)
@@ -1266,6 +1268,15 @@ func _on_blocking_changed(active: bool) -> void:
 		fill.size.x = 0.0
 		lbl.text    = "LISTA"
 		lbl.add_theme_color_override("font_color", Color(0.2, 1.0, 0.45))
+
+
+func _on_player_died(lost_items: Dictionary) -> void:
+	var death_scene: PackedScene = load("res://scenes/death_screen.tscn")
+	if death_scene == null:
+		return
+	var ds = death_scene.instantiate()
+	ds.setup(_player, lost_items)
+	get_tree().current_scene.add_child(ds)
 
 
 func _sb_slot_equipped() -> StyleBoxFlat:

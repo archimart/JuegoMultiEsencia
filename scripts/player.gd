@@ -12,6 +12,7 @@ signal blocking_changed(active: bool)
 signal class_changed(class_data: Resource)
 signal mana_changed(current: int, total: int)
 signal attack_hit(target: Node2D)
+signal died(lost_items: Dictionary)
 
 const DEFAULT_WALK_TEX   := "res://assets/Actor/Character/Hunter/SeparateAnim/Walk.png"
 const DEFAULT_IDLE_TEX   := "res://assets/Actor/Character/Hunter/SeparateAnim/Idle.png"
@@ -471,6 +472,7 @@ func take_hit(damage: int) -> void:
 
 
 func _respawn() -> void:
+	var lost: Dictionary = inventory.duplicate()
 	if not inventory.is_empty():
 		var bag: Node2D = _bag_scene.instantiate()
 		bag.position = global_position
@@ -478,12 +480,18 @@ func _respawn() -> void:
 		get_tree().current_scene.add_child(bag)
 	inventory.clear()
 	inventory_changed.emit()
+	input_blocked = true
+	SFX.play("die_player")
+	died.emit(lost)
+
+
+func do_respawn() -> void:
 	hp = max_hp
 	global_position = respawn_pos
 	_inv_t = INVULNERABILITY_T * 2.0
+	input_blocked = false
 	health_changed.emit()
-	SFX.play("die_player")
-	notice_requested.emit("Derrotado  —  bolsa en el punto de caída")
+	notice_requested.emit("Renaciste  —  tu bolsa está en el punto de caída")
 
 
 func _update_anim(moving: bool) -> void:
