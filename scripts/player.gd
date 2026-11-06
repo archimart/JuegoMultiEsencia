@@ -38,7 +38,7 @@ const CHARGE_SPEED_MULT:  float = 4.0
 const CHARGE_DURATION:    float = 0.40
 const CHARGE_PUSH_RANGE:  float = 18.0
 const CHARGE_PUSH_DMG:    int   = 8
-const WEAPON_IDS:         Array[String] = ["sword", "staff"]
+const WEAPON_IDS:         Array[String] = ["sword", "staff", "iron_sword"]
 
 # ── Habilidades del Mago ──────────────────────────────────────────────────────
 const SKILL_FIREBALL_CD:       float = 8.0
@@ -300,8 +300,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.keycode == KEY_F1 and event.pressed:
 		collect_item("wood", 20)
 		collect_item("arrows", 20)
+		collect_item("mineral", 10)
+		collect_item("iron_ingot", 5)
 		if inventory.get("bow", 0) == 0:
 			collect_item("bow", 1)
+		if inventory.get("pickaxe", 0) == 0:
+			collect_item("pickaxe", 1)
+		return
+
+	if event is InputEventKey and event.keycode == KEY_H and event.pressed:
+		_use_health_potion()
 		return
 
 	# Habilidades del Guerrero (teclas 1-3)
@@ -399,6 +407,23 @@ func collect_item(item: String, amount: int) -> void:
 func heal_hp(amount: int) -> void:
 	hp = mini(hp + amount, max_hp)
 	health_changed.emit()
+
+
+func _use_health_potion() -> void:
+	if inventory.get("health_potion", 0) <= 0:
+		notice_requested.emit("No tienes pociones de vida")
+		return
+	if hp >= max_hp:
+		notice_requested.emit("Ya tienes la vida al máximo")
+		return
+	inventory["health_potion"] -= 1
+	if inventory["health_potion"] <= 0:
+		inventory.erase("health_potion")
+	heal_hp(20)
+	FX.particles(global_position + Vector2(0, -12), "heal")
+	SFX.play("spirit")
+	notice_requested.emit("Poción de vida usada (+20 HP)")
+	inventory_changed.emit()
 
 
 func apply_shield() -> void:

@@ -181,7 +181,7 @@ func _get_active_fam_node(monster_id: String) -> Node:
 
 
 func _load_item_reg() -> void:
-	for id: String in ["wood", "bow", "arrows", "gold", "sword", "staff", "mineral", "iron_ingot"]:
+	for id: String in ["wood", "bow", "arrows", "gold", "sword", "staff", "mineral", "iron_ingot", "iron_sword", "pickaxe", "health_potion"]:
 		var path := "res://resources/item_" + id + ".tres"
 		if ResourceLoader.exists(path):
 			_item_reg[id] = load(path)

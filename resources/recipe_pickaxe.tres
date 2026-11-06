@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RecipeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_data.gd" id="1_pickaxe"]
+
+[resource]
+script = ExtResource("1_pickaxe")
+recipe_name = "Pico de Hierro"
+ingredients = {"iron_ingot": 2, "wood": 1}
+result_item = "pickaxe"
+result_amount = 1

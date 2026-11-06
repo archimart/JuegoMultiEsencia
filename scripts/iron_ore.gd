@@ -71,6 +71,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _mine() -> void:
+	if _player.inventory.get("pickaxe", 0) <= 0:
+		if _player.has_signal("notice_requested"):
+			_player.notice_requested.emit("Necesitas un pico para minar")
+		return
 	if _player.has_method("collect_item"):
 		_player.collect_item("mineral", MINERAL_DROP)
 	_set_state(OreState.DEPLETED)
