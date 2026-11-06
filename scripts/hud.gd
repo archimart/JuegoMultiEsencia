@@ -828,7 +828,82 @@ func _select_hotbar_slot(idx: int) -> void:
 		_player.call("_use_health_potion")
 	elif item_id.begins_with("egg_"):
 		if has_node("/root/FamiliarSystem"):
-			FamiliarSystem.try_hatch(_player)
+			var mid := item_id.substr(4)
+			var kills: int = int(FamiliarSystem.egg_kills.get(item_id, 0))
+			if kills < FamiliarSystem.KILLS_TO_HATCH:
+				if _player.has_signal("notice_requested"):
+					_player.notice_requested.emit("El huevo aún no está listo (%d/%d)" % [kills, FamiliarSystem.KILLS_TO_HATCH])
+				return
+			var rar := FamiliarSystem.get_egg_rarity(mid)
+			var rarity_str: String = rar.get("rarity", "common")
+			var is_shiny: bool     = rar.get("is_shiny", false)
+			if rarity_str in ["rare", "epic"] or is_shiny:
+				_show_hatch_confirm(item_id, rarity_str, is_shiny)
+			else:
+				FamiliarSystem.try_hatch(_player)
+
+
+func _show_hatch_confirm(item_id: String, rarity: String, is_shiny: bool) -> void:
+	var label_rarity: String = "SHINY" if is_shiny else rarity.to_upper()
+	var color: Color = Color(1.0, 0.85, 0.0) if is_shiny \
+		else (Color(0.6, 0.3, 1.0) if rarity == "epic" else Color(0.3, 0.6, 1.0))
+
+	var overlay := ColorRect.new()
+	overlay.color             = Color(0.0, 0.0, 0.0, 0.65)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter      = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+
+	var panel := Panel.new()
+	panel.custom_minimum_size = Vector2(170, 90)
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left   = -85.0; panel.offset_right  = 85.0
+	panel.offset_top    = -45.0; panel.offset_bottom = 45.0
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vbox.add_theme_constant_override("separation", 6)
+	vbox.offset_left = 8.0; vbox.offset_right  = -8.0
+	vbox.offset_top  = 8.0; vbox.offset_bottom = -8.0
+	panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text                = "Huevo %s" % label_rarity
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 10)
+	title.add_theme_color_override("font_color", color)
+	vbox.add_child(title)
+
+	var msg := Label.new()
+	msg.text                = "¿Eclosionar este\nhuevo especial?"
+	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	msg.add_theme_font_size_override("font_size", 8)
+	vbox.add_child(msg)
+
+	var hbox := HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 10)
+	vbox.add_child(hbox)
+
+	var btn_yes := Button.new()
+	btn_yes.text = "Sí"
+	btn_yes.custom_minimum_size = Vector2(50, 0)
+	btn_yes.add_theme_font_size_override("font_size", 9)
+	btn_yes.pressed.connect(func() -> void:
+		overlay.queue_free()
+		if has_node("/root/FamiliarSystem"):
+			FamiliarSystem.try_hatch(_player))
+	hbox.add_child(btn_yes)
+
+	var btn_no := Button.new()
+	btn_no.text = "No"
+	btn_no.custom_minimum_size = Vector2(50, 0)
+	btn_no.add_theme_font_size_override("font_size", 9)
+	btn_no.pressed.connect(func() -> void: overlay.queue_free())
+	hbox.add_child(btn_no)
+
+	btn_yes.grab_focus()
 
 
 # ── Utilidades ────────────────────────────────────────────────────────────────
