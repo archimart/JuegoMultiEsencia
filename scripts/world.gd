@@ -37,13 +37,24 @@ const _CHUNK_TREES: Array[Vector2i] = [
 	Vector2i(30, 130),Vector2i(50, 150), Vector2i(170, 160),
 ]
 
-# Minas de la cueva (coordenadas locales de tile)
+# Minas de la cueva (coordenadas locales de tile, offset CAVE_OFFSET_X)
 const _ORE_TILES := [
 	Vector2i(17,20), Vector2i(21,22), Vector2i(23,25),
 	Vector2i(10,11), Vector2i(14,12),
 	Vector2i(3,16),  Vector2i(6,20),
 	Vector2i(31,20), Vector2i(34,23),
 	Vector2i(35,10),
+]
+
+# Vetas en la superficie: zona norte (montañas) y bordes del mapa
+const _SURFACE_ORE_TILES: Array[Vector2i] = [
+	# Norte (cerca de la boca de la cueva, tile 99,25)
+	Vector2i(90, 10), Vector2i(96, 8),  Vector2i(103, 11),
+	Vector2i(110, 7), Vector2i(85, 14),
+	# Oeste (zona montañosa)
+	Vector2i(8, 55),  Vector2i(10, 70), Vector2i(7, 90),
+	# Este (zona montañosa)
+	Vector2i(188, 60),Vector2i(190, 80),Vector2i(185, 100),
 ]
 
 @onready var _player: Node2D = $Player
@@ -97,6 +108,7 @@ func _ready() -> void:
 	_spawn_interactive_trees()
 	_spawn_spawner()
 	_spawn_cave_ores()
+	_spawn_surface_ores()
 	var race = GameState.selected_race
 	if race != null:
 		_player.setup_race(race)
@@ -514,6 +526,13 @@ func _spawn_cave_ores() -> void:
 	for tp: Vector2i in _ORE_TILES:
 		var ore: Node2D = _ore_node_scene.instantiate()
 		ore.position = Vector2(CAVE_OFFSET_X + tp.x * 16.0 + 8.0, tp.y * 16.0 + 8.0)
+		add_child(ore)
+
+
+func _spawn_surface_ores() -> void:
+	for tp: Vector2i in _SURFACE_ORE_TILES:
+		var ore: Node2D = _ore_node_scene.instantiate()
+		ore.position = Vector2(tp.x * 16.0 + 8.0, tp.y * 16.0 + 8.0)
 		add_child(ore)
 
 
