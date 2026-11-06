@@ -277,6 +277,8 @@ func _physics_process(delta: float) -> void:
 
 	if input != Vector2.ZERO:
 		last_dir = input.normalized()
+		if has_node("/root/TutorialSystem"):
+			TutorialSystem.trigger("move")
 
 	# Invulnerabilidad y parpadeo
 	if _inv_t > 0.0:
@@ -403,6 +405,8 @@ func _signal_closest_target(dir: Vector2, max_range: float) -> void:
 func collect_item(item: String, amount: int) -> void:
 	inventory[item] = inventory.get(item, 0) + amount
 	inventory_changed.emit()
+	if item == "wood" and has_node("/root/TutorialSystem"):
+		TutorialSystem.trigger("wood")
 
 
 func heal_hp(amount: int) -> void:
@@ -461,6 +465,8 @@ func take_hit(damage: int) -> void:
 	hp    = maxi(0, hp - actual_dmg)
 	_inv_t = INVULNERABILITY_T
 	health_changed.emit()
+	if has_node("/root/TutorialSystem"):
+		TutorialSystem.trigger("hp")
 	_sprite.self_modulate = Color(4.0, 4.0, 4.0)
 	var tw := create_tween()
 	tw.tween_property(_sprite, "self_modulate", _race_modulate, 0.12)

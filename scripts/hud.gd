@@ -118,6 +118,8 @@ func set_player(p: Node2D) -> void:
 		p.mana_changed.connect(_update_mana)
 	if p.has_signal("died"):
 		p.died.connect(_on_player_died)
+	if has_node("/root/TutorialSystem"):
+		TutorialSystem.tip_requested.connect(show_notice)
 	_refresh()
 	_update_hp()
 	_update_player_level(p.get("level") if p.get("level") != null else 1)
@@ -611,6 +613,8 @@ func _toggle_inventory() -> void:
 		_inv_grid  = null
 	if not was_open and _player != null:
 		_open_inventory()
+		if has_node("/root/TutorialSystem"):
+			TutorialSystem.trigger("inventory")
 
 
 func _open_inventory() -> void:

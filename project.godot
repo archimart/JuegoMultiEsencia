@@ -23,6 +23,7 @@ GameState="*res://autoload/game_state.gd"
 CompanionSystem="*res://autoload/companion_system.gd"
 FamiliarSystem="*res://autoload/familiar_system.gd"
 UIManager="*res://autoload/ui_manager.gd"
+TutorialSystem="*res://autoload/tutorial_system.gd"
 
 [display]
 

@@ -74,6 +74,8 @@ func _open_shop() -> void:
 	if menu.has_signal("closed"):
 		menu.closed.connect(func() -> void: _menu_open = false)
 	get_tree().current_scene.add_child(menu)
+	if has_node("/root/TutorialSystem"):
+		TutorialSystem.trigger("shop")
 
 
 func _on_player_enter(body: Node2D) -> void:
