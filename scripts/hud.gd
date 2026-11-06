@@ -672,7 +672,7 @@ func _fill_inv_grid() -> void:
 		var is_equipped := (item_id == _equipped_weapon_id)
 		slot.add_theme_stylebox_override("panel",
 				_sb_slot_equipped() if is_equipped else _sb_slot())
-		slot.tooltip_text = _item_name(item_id) + (" (equipado)" if is_equipped else "")
+		slot.tooltip_text = _make_slot_tooltip(item_id, amt, is_equipped)
 		_inv_grid.add_child(slot)
 
 		if ResourceLoader.exists("res://resources/weapon_%s.tres" % item_id):
@@ -1136,6 +1136,37 @@ func _on_egg_progress(_item_id: String, _kills: int, _needed: int) -> void:
 
 
 # ── Clic derecho en inventario ────────────────────────────────────────────────
+
+func _make_slot_tooltip(item_id: String, amt: int, is_equipped: bool) -> String:
+	var name := _item_name(item_id)
+	var lines: PackedStringArray = [name]
+	if is_equipped:
+		lines.append("(equipado)")
+	# Stats de arma
+	var wpn_path := "res://resources/weapon_%s.tres" % item_id
+	if ResourceLoader.exists(wpn_path):
+		var w: Resource = load(wpn_path)
+		lines.append("Daño: %d  |  Rango: %gpx" % [int(w.get("damage")), float(w.get("range_px"))])
+		lines.append("Cooldown: %gs  |  Clic derecho para equipar" % float(w.get("cooldown")))
+	elif item_id == "health_potion":
+		lines.append("+20 HP al usar")
+		lines.append("Presiona [H] para usar")
+	elif item_id == "pickaxe":
+		lines.append("Herramienta de minería")
+		lines.append("Necesario para minar vetas")
+	elif item_id.begins_with("egg_"):
+		var mid := item_id.substr(4)
+		var rar := FamiliarSystem.get_egg_rarity(mid) if has_node("/root/FamiliarSystem") else {}
+		var kills: int = int(FamiliarSystem.egg_kills.get(item_id, 0)) if has_node("/root/FamiliarSystem") else 0
+		var needed: int = FamiliarSystem.KILLS_TO_HATCH if has_node("/root/FamiliarSystem") else 10
+		lines.append("Rareza: %s" % rar.get("rarity", "común").capitalize())
+		lines.append("Progreso: %d/%d  |  [F] para eclosionar" % [kills, needed])
+	elif item_id in ["wood", "mineral", "iron_ingot"]:
+		lines.append("Material de crafteo")
+	if amt > 1:
+		lines.append("Cantidad: %d" % amt)
+	return "\n".join(lines)
+
 
 func _on_inv_slot_input(ev: InputEvent, item_id: String) -> void:
 	if ev is InputEventMouseButton \
