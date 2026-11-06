@@ -331,6 +331,7 @@ func _spawn_chunk_world_objects() -> void:
 	var merchant: CityNPC = _city_npc_scene.instantiate()
 	merchant.npc_name     = "Comerciante"
 	merchant.atlas_region = Rect2(0, 96, 16, 16)
+	merchant.shop_scene   = "res://scenes/shop_menu.tscn"
 	merchant.position     = Vector2(1504.0, 1600.0)
 	add_child(merchant)
 

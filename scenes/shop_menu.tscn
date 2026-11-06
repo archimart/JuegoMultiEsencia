@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/shop_menu.gd" id="1"]
+
+[node name="ShopMenu" type="CanvasLayer"]
+script = ExtResource("1")
+layer = 10
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -145.0
+offset_top = -110.0
+offset_right = 145.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+
+[node name="Title" type="Label" parent="Panel/VBox"]
+text = "Comerciante"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 10
+
+[node name="GoldRow" type="HBoxContainer" parent="Panel/VBox"]
+
+[node name="GoldLbl" type="Label" parent="Panel/VBox/GoldRow"]
+text = "Oro: 0"
+theme_override_font_sizes/font_size = 8
+
+[node name="HSep" type="HSeparator" parent="Panel/VBox"]
+
+[node name="TabRow" type="HBoxContainer" parent="Panel/VBox"]
+
+[node name="BtnBuy" type="Button" parent="Panel/VBox/TabRow"]
+text = "Comprar"
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+
+[node name="BtnSell" type="Button" parent="Panel/VBox/TabRow"]
+text = "Vender"
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+
+[node name="ItemList" type="VBoxContainer" parent="Panel/VBox"]
+size_flags_vertical = 3
+
+[node name="Feedback" type="Label" parent="Panel/VBox"]
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 8
