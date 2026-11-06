@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CompanionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/companion_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+companion_name = "Espíritu del bosque"
+sprite_is_4dir = true
+sprite_walk_tex = "res://assets/Actor/Character/Spirit/SeparateAnim/Walk.png"
+sprite_idle_tex = "res://assets/Actor/Character/Spirit/SeparateAnim/Idle.png"
+sprite_tile_size = 16
+sprite_walk_frames = 4
+sprite_fps = 6.0
+ability_scene_path = "res://scenes/abilities/forest_spirit_ability.tscn"
+damage_per_level = [0, 0, 0, 0, 0]
+cooldown_per_level = [99.0, 99.0, 99.0, 99.0, 99.0]
+xp_to_next = [5, 15, 30, 60, 0]
+heal_pct_per_level = [0.1, 0.12, 0.15, 0.18, 0.22]
+shield_cooldown_per_level = [20.0, 17.0, 14.0, 11.0, 8.0]
+heal_interval = 6.0
+shield_hp_threshold = 0.3

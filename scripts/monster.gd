@@ -24,6 +24,14 @@ var _attack_cd:  float   = 0.0
 var _wander_dir: Vector2 = Vector2.ZERO
 var _wander_t:   float   = 0.0
 var _hp_visible: bool    = false
+var _slow_mult:  float   = 1.0
+var _slow_t:     float   = 0.0
+var _poison_dps: float   = 0.0
+var _poison_t:   float   = 0.0
+var _poison_acc: float   = 0.0
+var _cursed_t:   float   = 0.0
+var _taunt_node: Node2D  = null
+var _taunt_t:    float   = 0.0
 
 var _coin_scene: PackedScene = preload("res://scenes/coin.tscn")
 
@@ -54,6 +62,41 @@ func _physics_process(delta: float) -> void:
 	if _state == State.DEAD:
 		return
 	_attack_cd = maxf(0.0, _attack_cd - delta)
+	if _slow_t > 0.0:
+		_slow_t = maxf(0.0, _slow_t - delta)
+		if _slow_t <= 0.0:
+			_slow_mult = 1.0
+	# Veneno
+	if _poison_t > 0.0:
+		_poison_t -= delta
+		_poison_acc += _poison_dps * delta
+		if _poison_acc >= 1.0:
+			var pdmg := int(_poison_acc)
+			_poison_acc -= float(pdmg)
+			_health -= pdmg
+			FX.damage_number(global_position + Vector2(0.0, -20.0), pdmg, Color(0.35, 0.95, 0.3))
+			if _health <= 0 and _state != State.DEAD:
+				_die()
+				return
+		if _poison_t <= 0.0:
+			_poison_acc = 0.0
+	# Maldición
+	if _cursed_t > 0.0:
+		_cursed_t = maxf(0.0, _cursed_t - delta)
+	# Provocación
+	if _taunt_t > 0.0:
+		_taunt_t = maxf(0.0, _taunt_t - delta)
+		if _taunt_t <= 0.0 or not is_instance_valid(_taunt_node):
+			_taunt_node = null
+	# Modulación visual según estado activo
+	if _poison_t > 0.0:
+		_sprite.self_modulate = Color(0.4, 1.3, 0.4)
+	elif _cursed_t > 0.0:
+		_sprite.self_modulate = Color(0.75, 0.4, 1.0)
+	elif _slow_t > 0.0:
+		_sprite.self_modulate = Color(0.5, 0.85, 1.8)
+	else:
+		_sprite.self_modulate = Color.WHITE
 	_knockback = _knockback.lerp(Vector2.ZERO, KNOCKBACK_DECAY * delta)
 	velocity   = Vector2.ZERO
 
@@ -80,7 +123,7 @@ func _tick_wander(delta: float) -> void:
 			_wander_dir = Vector2.ZERO
 		else:
 			_wander_dir = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
-	velocity = _wander_dir * data.speed * WANDER_SPEED_MUL
+	velocity = _wander_dir * data.speed * WANDER_SPEED_MUL * _slow_mult
 
 
 func _tick_chase() -> void:
@@ -90,31 +133,56 @@ func _tick_chase() -> void:
 	if _player.get("in_safe_zone"):
 		_state = State.WANDER
 		return
-	var diff := _player.global_position - global_position
+	var chase_target: Node2D = _taunt_node \
+		if (_taunt_node != null and is_instance_valid(_taunt_node)) else _player
+	var diff := chase_target.global_position - global_position
 	var dist := diff.length()
-	if dist > data.vision_range * 1.5:
+	if chase_target == _player and dist > data.vision_range * 1.5:
 		_state = State.WANDER
 		return
 	if dist <= data.attack_range:
 		_state = State.ATTACK
 		return
-	velocity = diff.normalized() * data.speed
+	velocity = diff.normalized() * data.speed * _slow_mult
 
 
 func _tick_attack() -> void:
 	if _player == null:
 		_state = State.WANDER
 		return
-	var dist := global_position.distance_to(_player.global_position)
+	var attack_target: Node2D = _taunt_node \
+		if (_taunt_node != null and is_instance_valid(_taunt_node)) else _player
+	var dist := global_position.distance_to(attack_target.global_position)
 	if dist > data.attack_range * 1.4:
 		_state = State.CHASE
 		return
 	if _attack_cd <= 0.0:
-		if _player.has_method("take_hit"):
-			_player.take_hit(data.damage)
-			if _player.has_signal("hurt_by"):
-				_player.hurt_by.emit(self)
-		_attack_cd = data.attack_cooldown
+		if _cursed_t > 0.0:
+			# Maldición: no puede atacar, solo reinicia el cooldown
+			_attack_cd = data.attack_cooldown
+		elif attack_target != _player:
+			# Provocado: ataca al familiar del gólem
+			if attack_target.has_method("take_damage"):
+				attack_target.call("take_damage", data.damage, global_position)
+			_attack_cd = data.attack_cooldown
+		else:
+			if _player.has_method("take_hit"):
+				_player.take_hit(data.damage)
+				if _player.has_signal("hurt_by"):
+					_player.hurt_by.emit(self)
+			# Golpear al compañero si está cerca (daño reducido al 50 %)
+			for comp: Node in get_tree().get_nodes_in_group("companion"):
+				if comp is Node2D and comp.has_method("take_hit_companion"):
+					var cdist := (comp as Node2D).global_position.distance_to(global_position)
+					if cdist < data.attack_range * 1.5:
+						comp.call("take_hit_companion", maxi(1, data.damage / 2))
+			# Golpear familiares cercanos al jugador (están en la espalda, no al frente)
+			for fam in get_tree().get_nodes_in_group("familiar"):
+				if fam is Node2D and fam.has_method("take_damage"):
+					var fdist := (fam as Node2D).global_position.distance_to(_player.global_position)
+					if fdist < 55.0:
+						fam.call("take_damage", maxi(1, data.damage), global_position)
+			_attack_cd = data.attack_cooldown
 
 
 func take_damage(amount: int, from_pos: Vector2 = Vector2.ZERO) -> void:
@@ -137,21 +205,58 @@ func take_damage(amount: int, from_pos: Vector2 = Vector2.ZERO) -> void:
 func _die() -> void:
 	_state = State.DEAD
 	set_physics_process(false)
-	_col_shape.disabled = true
+	_col_shape.set_deferred("disabled", true)
 	died.emit()  # antes de queue_free para que los oyentes aún tengan referencia válida
+	CompanionSystem.on_monster_killed(data, global_position, _player)
+	FamiliarSystem.on_monster_killed(data, global_position, _player)
+	FamiliarSystem.try_drop_egg(data, global_position, get_tree().current_scene)
+	if _player != null and _player.has_method("add_xp"):
+		_player.call("add_xp", _xp_for_region(str(data.get("region"))))
 	FX.particles(global_position, "death")
 	FX.camera_shake(2.5, 0.12)
 	SFX.play("die_monster")
 	var gold_count := randi_range(data.gold_min, data.gold_max)
+	var scene      := get_tree().current_scene
 	for _i: int in gold_count:
 		var coin: Node2D = _coin_scene.instantiate()
 		coin.global_position = global_position + Vector2(
 			randf_range(-10.0, 10.0), randf_range(-8.0, 8.0)
 		)
-		get_tree().current_scene.add_child(coin)
+		scene.call_deferred("add_child", coin)
 	var tw := create_tween()
 	tw.tween_property(_sprite, "modulate", Color(1.0, 1.0, 1.0, 0.0), 0.35)
 	tw.tween_callback(queue_free)
+
+
+func apply_slow(duration: float, mult: float = 0.35) -> void:
+	_slow_mult = mult
+	_slow_t    = maxf(_slow_t, duration)
+
+
+func apply_poison(dps: float, duration: float) -> void:
+	_poison_dps = maxf(_poison_dps, dps)
+	_poison_t   = maxf(_poison_t, duration)
+
+
+func apply_curse(duration: float) -> void:
+	_cursed_t = maxf(_cursed_t, duration)
+
+
+func set_taunt(node: Node2D, duration: float) -> void:
+	_taunt_node = node
+	_taunt_t    = duration
+	if _state == State.WANDER:
+		_state = State.CHASE
+
+
+func _xp_for_region(region: String) -> int:
+	match region:
+		"pradera":  return 5
+		"bosque":   return 8
+		"montaña":  return 12
+		"desierto": return 12
+		"pantano":  return 15
+	return 5
 
 
 func _tick_sprite() -> void:

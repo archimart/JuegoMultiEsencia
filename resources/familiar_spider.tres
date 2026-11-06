@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Araña"
+ability_id = "spider"
+max_hp = 18
+damage = 4
+attack_cooldown = 0.9
+move_speed = 145.0
+attack_range = 40.0

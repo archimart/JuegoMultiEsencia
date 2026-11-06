@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Escorpión"
+max_health = 35
+speed = 55.0
+damage = 10
+vision_range = 90.0
+attack_cooldown = 1.2
+gold_min = 3
+gold_max = 7
+sprite_path = "res://assets/Actor/Monster/SpiderYellow/SpriteSheet.png"
+essence_id = "scorpion"
+region = "desierto"
+essences_required = 12

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Golem"
+max_health = 60
+speed = 28.0
+damage = 14
+vision_range = 80.0
+attack_cooldown = 2.0
+gold_min = 5
+gold_max = 10
+sprite_path = "res://assets/Actor/Monster/Cyclope/SpriteSheet.png"
+essence_id = "golem"
+region = "montaña"
+essences_required = 20

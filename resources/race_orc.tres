@@ -13,3 +13,4 @@ max_hp = 45
 speed = 70.0
 damage_multiplier = 1.5
 companion_data = ExtResource("2")
+region = "desert"

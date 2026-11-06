@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Hongo"
+ability_id = "mushroom"
+max_hp = 35
+damage = 7
+attack_cooldown = 1.8
+move_speed = 85.0
+attack_range = 44.0

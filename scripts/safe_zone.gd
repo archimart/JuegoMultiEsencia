@@ -33,6 +33,8 @@ func _on_body_entered(body: Node2D) -> void:
 	_player = body
 	body.in_safe_zone = true
 	body.notice_requested.emit("Zona segura")
+	if has_node("/root/FamiliarSystem"):
+		FamiliarSystem.instant_recover_all()
 
 
 func _on_body_exited(body: Node2D) -> void:

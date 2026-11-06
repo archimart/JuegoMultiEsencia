@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CompanionData" format=3]
+
+[ext_resource type="Script" uid="uid://b1y0g4h88hsam" path="res://scripts/companion_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+companion_name = "Familiar de Sombras"
+sprite_is_4dir = true
+sprite_walk_tex = "res://assets/Actor/Monster/Spirit/SpriteSheet.png"
+sprite_tile_size = 16
+sprite_walk_frames = 4
+sprite_fps = 6.0
+damage_per_level = [3, 5, 8, 11, 15]
+cooldown_per_level = [2.0, 1.8, 1.5, 1.2, 1.0]
+xp_to_next = [5, 15, 30, 60, 0]
+max_hp_per_level = [15, 20, 26, 33, 42]

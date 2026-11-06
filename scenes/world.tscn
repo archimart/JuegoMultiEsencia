@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cn71b1f2r5j80" path="res://scripts/world.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/companion.tscn" id="3"]
 
 [node name="World" type="Node2D" unique_id=2096512048]
 y_sort_enabled = true
@@ -32,6 +31,3 @@ y_sort_enabled = true
 
 [node name="Player" parent="." unique_id=1396585192 instance=ExtResource("2")]
 position = Vector2(320, 200)
-
-[node name="Companion" parent="." unique_id=392342140 instance=ExtResource("3")]
-position = Vector2(296, 210)

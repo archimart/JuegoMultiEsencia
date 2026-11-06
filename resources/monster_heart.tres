@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="MonsterData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MonsterData" format=3 uid="uid://8mallrxvn4n4"]
 
-[ext_resource type="Script" path="res://scripts/monster_data.gd" id="1_mdat"]
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+[ext_resource type="Resource" path="res://resources/companion_heart.tres" id="2_comp"]
 
 [resource]
 script = ExtResource("1_mdat")
@@ -9,8 +10,10 @@ max_health = 12
 speed = 30.0
 damage = 2
 vision_range = 65.0
-attack_range = 14.0
 attack_cooldown = 1.5
-gold_min = 1
 gold_max = 2
 sprite_path = "res://assets/Actor/Monster/HeartRed/SpriteSheet.png"
+essence_id = "heart"
+region = "prairie"
+companion_data = ExtResource("2_comp")
+essences_required = 10

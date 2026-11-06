@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Serpiente"
+ability_id = "snake"
+max_hp = 22
+damage = 5
+attack_cooldown = 1.1
+move_speed = 130.0
+attack_range = 42.0

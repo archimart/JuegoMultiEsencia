@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Araña"
+max_health = 20
+speed = 70.0
+damage = 8
+vision_range = 100.0
+attack_cooldown = 0.9
+gold_min = 2
+gold_max = 5
+sprite_path = "res://assets/Actor/Monster/SpiderRed/SpriteSheet.png"
+essence_id = "spider"
+region = "bosque"
+essences_required = 12

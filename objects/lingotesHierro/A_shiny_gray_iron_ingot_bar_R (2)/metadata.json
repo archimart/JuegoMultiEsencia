@@ -1,0 +1,22 @@
+{
+  "group_id": "fb0c3fe4-6e6a-415b-baaa-ff7f92895608",
+  "objects": [
+    {
+      "id": "b15c0ed7-5e7b-421e-a3ba-637e46040cae",
+      "name": "base",
+      "prompt": "A shiny gray iron ingot bar, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_shiny_gray_iron_ingot_bar_R.png"
+      },
+      "animations": {}
+    }
+  ],
+  "export_version": "1.1",
+  "export_date": "2026-11-06T03:19:20.649268"
+}

@@ -1,0 +1,22 @@
+{
+  "group_id": "6e009189-2e67-49f9-9aa1-215d1936baa4",
+  "objects": [
+    {
+      "id": "54100013-8fb2-4fad-bfe5-6303ce3e9063",
+      "name": "base",
+      "prompt": "A chunk of gray rock with orange-brown iron ore veins, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_chunk_of_gray_rock_with_oran.png"
+      },
+      "animations": {}
+    }
+  ],
+  "export_version": "1.1",
+  "export_date": "2026-11-06T03:00:51.464247"
+}

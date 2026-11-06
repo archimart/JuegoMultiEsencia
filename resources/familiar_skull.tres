@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Calavera"
+ability_id = "skull"
+max_hp = 15
+damage = 9
+attack_cooldown = 1.6
+move_speed = 120.0
+attack_range = 44.0

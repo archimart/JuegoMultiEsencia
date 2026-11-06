@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CompanionData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/companion_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+companion_name = "Corazón"
+sprite_is_4dir = true
+sprite_walk_tex = "res://assets/Actor/Monster/HeartRed/SpriteSheet.png"
+sprite_tile_size = 16
+sprite_walk_frames = 4
+sprite_fps = 6.0
+ability_scene_path = ""
+damage_per_level = [3, 5, 7, 9, 12]
+cooldown_per_level = [2.5, 2.2, 1.8, 1.5, 1.2]
+xp_to_next = [5, 15, 30, 60, 0]
+max_hp_per_level = [18, 24, 30, 38, 48]

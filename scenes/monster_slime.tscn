@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/monster.gd" id="1_scr"]
+[ext_resource type="Resource" path="res://resources/monster_slime.tres" id="2_dat"]
+
+[sub_resource type="CapsuleShape2D" id="col"]
+radius = 5.0
+height = 4.0
+
+[node name="MonsterSlime" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 1
+script = ExtResource("1_scr")
+data = ExtResource("2_dat")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("col")

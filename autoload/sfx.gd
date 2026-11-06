@@ -9,6 +9,10 @@ const SOUNDS: Dictionary = {
 	"coin":        "res://assets/Audio/Sounds/Bonus/Coin.wav",
 	"die_monster": "res://assets/Audio/Sounds/Hit & Impact/Impact.wav",
 	"die_player":  "res://assets/Audio/Jingles/GameOver.wav",
+	"spirit":      "res://assets/Audio/Sounds/Magic & Skill/Spirit.wav",
+	"ui_click":    "res://assets/Audio/Sounds/Menu/Accept.wav",
+	"ui_hover":    "res://assets/Audio/Sounds/Menu/Move1.wav",
+	"mine":        "res://assets/Audio/Sounds/Hit & Impact/Impact3.wav",
 }
 
 

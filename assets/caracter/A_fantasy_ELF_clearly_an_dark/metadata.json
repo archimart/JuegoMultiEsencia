@@ -1,0 +1,79 @@
+{
+  "group_id": "5da831d7-103d-4f8a-b241-dc958c425273",
+  "states": [
+    {
+      "character": {
+        "id": "7375154a-ca24-49b1-9de0-1e4975731a4b",
+        "name": "Same character, same",
+        "prompt": "A fantasy male ELF, clearly an elf. Very long pointed elf ears sticking out sideways from the head, shoulder-length light blonde hair, a thin golden leaf circlet on the forehead, slender athletic body. White and cream elven tunic with green leaf trim, brown leather boots, small wooden bow on the back. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-04T01:01:36.072536+00:00"
+      },
+      "folder": "Same_character_same_2",
+      "frames": {
+        "rotations": {
+          "south": "Same_character_same_2/rotations/south.png",
+          "south-east": "Same_character_same_2/rotations/south-east.png",
+          "east": "Same_character_same_2/rotations/east.png",
+          "north-east": "Same_character_same_2/rotations/north-east.png",
+          "north": "Same_character_same_2/rotations/north.png",
+          "north-west": "Same_character_same_2/rotations/north-west.png",
+          "west": "Same_character_same_2/rotations/west.png",
+          "south-west": "Same_character_same_2/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "south": [
+              "Same_character_same_2/animations/Walking/south/frame_000.png",
+              "Same_character_same_2/animations/Walking/south/frame_001.png",
+              "Same_character_same_2/animations/Walking/south/frame_002.png",
+              "Same_character_same_2/animations/Walking/south/frame_003.png",
+              "Same_character_same_2/animations/Walking/south/frame_004.png",
+              "Same_character_same_2/animations/Walking/south/frame_005.png",
+              "Same_character_same_2/animations/Walking/south/frame_006.png",
+              "Same_character_same_2/animations/Walking/south/frame_007.png"
+            ],
+            "east": [
+              "Same_character_same_2/animations/Walking/east/frame_000.png",
+              "Same_character_same_2/animations/Walking/east/frame_001.png",
+              "Same_character_same_2/animations/Walking/east/frame_002.png",
+              "Same_character_same_2/animations/Walking/east/frame_003.png",
+              "Same_character_same_2/animations/Walking/east/frame_004.png",
+              "Same_character_same_2/animations/Walking/east/frame_005.png",
+              "Same_character_same_2/animations/Walking/east/frame_006.png",
+              "Same_character_same_2/animations/Walking/east/frame_007.png"
+            ],
+            "west": [
+              "Same_character_same_2/animations/Walking/west/frame_000.png",
+              "Same_character_same_2/animations/Walking/west/frame_001.png",
+              "Same_character_same_2/animations/Walking/west/frame_002.png",
+              "Same_character_same_2/animations/Walking/west/frame_003.png",
+              "Same_character_same_2/animations/Walking/west/frame_004.png",
+              "Same_character_same_2/animations/Walking/west/frame_005.png",
+              "Same_character_same_2/animations/Walking/west/frame_006.png",
+              "Same_character_same_2/animations/Walking/west/frame_007.png"
+            ],
+            "north": [
+              "Same_character_same_2/animations/Walking/north/frame_000.png",
+              "Same_character_same_2/animations/Walking/north/frame_001.png",
+              "Same_character_same_2/animations/Walking/north/frame_002.png",
+              "Same_character_same_2/animations/Walking/north/frame_003.png",
+              "Same_character_same_2/animations/Walking/north/frame_004.png",
+              "Same_character_same_2/animations/Walking/north/frame_005.png",
+              "Same_character_same_2/animations/Walking/north/frame_006.png",
+              "Same_character_same_2/animations/Walking/north/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-04T01:13:05.019973"
+}

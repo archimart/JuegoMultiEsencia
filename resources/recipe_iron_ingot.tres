@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RecipeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/recipe_data.gd" id="1_iron"]
+
+[resource]
+script = ExtResource("1_iron")
+recipe_name = "Lingote de Hierro"
+ingredients = {"mineral": 3}
+result_item = "iron_ingot"
+result_amount = 1

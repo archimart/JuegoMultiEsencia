@@ -1,0 +1,908 @@
+{
+  "objects": [
+    {
+      "id": "a9299c27-ed28-45c2-b037-c7690cf70fed",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "a510a091-bdea-405c-865a-c4f60ef5f426",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_2.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "a4e9e785-59b0-4791-929a-23c3883d1d7f",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_3.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "a4e21ab9-261c-4c4e-b870-eb44f396c439",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_4.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "a3d6e5a1-5a45-40b3-bba6-e8504a5aaca7",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_5.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "9fc4f0cd-ea41-4bda-9f89-1c83c911a97d",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_6.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "9d55b6e3-d620-42ff-85f0-42b750f0773e",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_7.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "9c9f4435-468a-4b13-b6eb-596b1671ccf5",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_8.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "99e13eb1-0ef2-4046-aad4-d1ca93329394",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_9.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "963956c2-9ac1-471d-b55d-822ef5a42295",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_10.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "953ec699-3e0b-4db0-a51a-ba095d58b8a4",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_11.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "94979402-5288-40c4-a67e-2779d66c7022",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_12.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "91e9c9ae-113b-465e-8ec2-31ba0910c80e",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_13.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "8ebc73e6-6815-4026-bfc9-0aa17f0a6f85",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_14.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "87c3c5a6-88c7-48d1-9cef-c108f6f52517",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_15.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "852d7f69-91be-4811-b8d6-e02837de049e",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_16.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "778dff18-a034-49cd-bf49-990f8116d19e",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_17.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "71636498-1e28-4026-bac8-3c6de7999f5f",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_18.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "6dbcee20-2543-474d-a8c1-4084ced5c096",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_19.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "6d4f5580-645a-4fb1-a621-098198e63355",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_20.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "6ce3d9d9-b26e-4367-ba92-c8a0a8fe2611",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_21.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "6718384d-7272-4357-9003-bfadb3ca9748",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_22.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "60824bf1-320a-4fd3-a7db-02da3ce1d99c",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_23.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "5782f6bd-25e4-4029-80d8-ff6695acf5f2",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_24.png"
+      },
+      "animations": {}
+    },
+    {
+      "id": "4569d81d-ed5b-4f57-bf1b-1ad9fcd716f1",
+      "name": "base",
+      "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+      "size": {
+        "width": 16,
+        "height": 16
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/A_plain_white_egg_with_a_few_l_25.png"
+      },
+      "animations": {}
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "f4c7fc3c-fb88-4419-8985-a09c7fa93dd2",
+      "folder": "objects/A_plain_white_egg_with_a_few_l",
+      "objects": [
+        {
+          "id": "a9299c27-ed28-45c2-b037-c7690cf70fed",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "fb8b4d2e-12ea-463c-9e8d-a34007fc9ca4",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_2",
+      "objects": [
+        {
+          "id": "a510a091-bdea-405c-865a-c4f60ef5f426",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_2.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "18021f60-09e9-4dbe-9032-0f9fd49f193f",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_3",
+      "objects": [
+        {
+          "id": "a4e9e785-59b0-4791-929a-23c3883d1d7f",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_3.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "f3154228-cbb0-48ee-8801-43cb05605519",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_4",
+      "objects": [
+        {
+          "id": "a4e21ab9-261c-4c4e-b870-eb44f396c439",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_4.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "f864cbbb-2744-4779-9974-0c257632d468",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_5",
+      "objects": [
+        {
+          "id": "a3d6e5a1-5a45-40b3-bba6-e8504a5aaca7",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_5.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "35b0ec8f-32b7-491c-9daf-b50c11486047",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_6",
+      "objects": [
+        {
+          "id": "9fc4f0cd-ea41-4bda-9f89-1c83c911a97d",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_6.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "2e93098d-2ec4-4c7a-a3d4-ab5732beae60",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_7",
+      "objects": [
+        {
+          "id": "9d55b6e3-d620-42ff-85f0-42b750f0773e",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_7.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "1f601f05-746d-47e2-9f42-a78d1867aa72",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_8",
+      "objects": [
+        {
+          "id": "9c9f4435-468a-4b13-b6eb-596b1671ccf5",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_8.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "9d53ad5d-9ac1-4fdc-ac3e-1587a6f326cb",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_9",
+      "objects": [
+        {
+          "id": "99e13eb1-0ef2-4046-aad4-d1ca93329394",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_9.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "4d588018-b5d0-403b-8020-734a0697ac0d",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_10",
+      "objects": [
+        {
+          "id": "963956c2-9ac1-471d-b55d-822ef5a42295",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_10.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "a9791572-f818-4174-92b7-76501d5663c3",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_11",
+      "objects": [
+        {
+          "id": "953ec699-3e0b-4db0-a51a-ba095d58b8a4",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_11.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "8e934409-c5ef-4868-8916-428629421c21",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_12",
+      "objects": [
+        {
+          "id": "94979402-5288-40c4-a67e-2779d66c7022",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_12.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "e7b5fe6d-1a87-4893-a845-23c665b48ede",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_13",
+      "objects": [
+        {
+          "id": "91e9c9ae-113b-465e-8ec2-31ba0910c80e",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_13.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "134f17e6-35c4-4ee1-858f-c0f5fbb401c1",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_14",
+      "objects": [
+        {
+          "id": "8ebc73e6-6815-4026-bfc9-0aa17f0a6f85",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_14.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "ef1b5c00-8356-4ccc-9140-85674bf7b4f2",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_15",
+      "objects": [
+        {
+          "id": "87c3c5a6-88c7-48d1-9cef-c108f6f52517",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_15.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "64da947a-22fa-414c-b261-cdd4dcd1cda1",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_16",
+      "objects": [
+        {
+          "id": "852d7f69-91be-4811-b8d6-e02837de049e",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_16.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "d64c0090-adf7-4484-bc50-64ed12ac4695",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_17",
+      "objects": [
+        {
+          "id": "778dff18-a034-49cd-bf49-990f8116d19e",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_17.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "8e6861ed-5a6d-4f15-b1ce-99842f7efaf2",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_18",
+      "objects": [
+        {
+          "id": "71636498-1e28-4026-bac8-3c6de7999f5f",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_18.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "3f9dba38-9d16-48d1-86fa-f704f69b7d81",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_19",
+      "objects": [
+        {
+          "id": "6dbcee20-2543-474d-a8c1-4084ced5c096",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_19.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "79fb0827-4241-436f-8c42-06fdb9b942d7",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_20",
+      "objects": [
+        {
+          "id": "6d4f5580-645a-4fb1-a621-098198e63355",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_20.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "2394f148-4e14-4206-b1e2-892841a3c542",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_21",
+      "objects": [
+        {
+          "id": "6ce3d9d9-b26e-4367-ba92-c8a0a8fe2611",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_21.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "a639a503-607f-402f-9c7b-47e183c6cb65",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_22",
+      "objects": [
+        {
+          "id": "6718384d-7272-4357-9003-bfadb3ca9748",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_22.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "d2758869-c5b0-4108-b380-7e6526625f05",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_23",
+      "objects": [
+        {
+          "id": "60824bf1-320a-4fd3-a7db-02da3ce1d99c",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_23.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "52dfd92e-a705-4f05-8661-7478a38360ae",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_24",
+      "objects": [
+        {
+          "id": "5782f6bd-25e4-4029-80d8-ff6695acf5f2",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_24.png"
+          },
+          "animations": {}
+        }
+      ]
+    },
+    {
+      "group_id": "f9e34427-cea6-438e-8f3e-aa1f295f33c4",
+      "folder": "objects/A_plain_white_egg_with_a_few_l_25",
+      "objects": [
+        {
+          "id": "4569d81d-ed5b-4f57-bf1b-1ad9fcd716f1",
+          "name": "base",
+          "prompt": "A plain white egg with a few light gray spots, RPG game item icon, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing, transparent background, centered.",
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "directions": 1,
+          "view": "low top-down",
+          "rotations": {
+            "unknown": "rotations/A_plain_white_egg_with_a_few_l_25.png"
+          },
+          "animations": {}
+        }
+      ]
+    }
+  ],
+  "export_version": "1.1",
+  "export_date": "2026-11-06T02:53:43.724281"
+}

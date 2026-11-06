@@ -28,3 +28,17 @@ extends Resource
 @export var damage_per_level:   Array[int]   = [2, 4, 6, 8, 10]
 @export var cooldown_per_level: Array[float] = [3.0, 2.5, 2.0, 1.5, 1.2]
 @export var xp_to_next:         Array[int]   = [5, 15, 30, 60, 0]
+
+# ── Soporte (Espíritu del Bosque) ────────────────────────────────────────────────
+## Porcentaje de HP máximo que se cura por nivel (0.10 = 10 %)
+@export var heal_pct_per_level:        Array[float] = []
+## Recarga del escudo en segundos por nivel
+@export var shield_cooldown_per_level: Array[float] = []
+## Intervalo en segundos entre curaciones automáticas
+@export var heal_interval:             float         = 6.0
+## El escudo se activa cuando HP < este umbral (0.30 = 30 %)
+@export var shield_hp_threshold:       float         = 0.30
+
+# ── HP del compañero (KO al llegar a 0) ─────────────────────────────────────────
+## HP máximo por nivel. Si está vacío el compañero es inmortal.
+@export var max_hp_per_level: Array[int] = []

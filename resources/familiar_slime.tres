@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Slime"
+ability_id = "slime"
+max_hp = 30
+damage = 5
+attack_cooldown = 1.6
+move_speed = 100.0
+attack_range = 44.0

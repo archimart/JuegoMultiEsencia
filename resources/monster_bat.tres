@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Murciélago"
+max_health = 18
+speed = 85.0
+damage = 5
+vision_range = 120.0
+attack_cooldown = 0.8
+gold_min = 2
+gold_max = 4
+sprite_path = "res://assets/Actor/Monster/BlueBat/SpriteSheet.png"
+essence_id = "bat"
+region = "montaña"
+essences_required = 10

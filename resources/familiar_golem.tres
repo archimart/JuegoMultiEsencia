@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Gólem"
+ability_id = "golem"
+max_hp = 60
+damage = 8
+attack_cooldown = 2.2
+move_speed = 75.0
+attack_range = 46.0

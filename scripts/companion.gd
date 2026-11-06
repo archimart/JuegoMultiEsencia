@@ -3,12 +3,13 @@ extends CharacterBody2D
 signal xp_changed(current_xp: int, xp_to_next: int)
 signal level_changed(new_level: int)
 signal notice_requested(text: String)
+signal ko_changed(is_ko: bool)
 
 # Preloads explícitos para que el parser resuelva los tipos antes del escaneo global
 const CompanionData    := preload("res://scripts/companion_data.gd")
 const CompanionAbility := preload("res://scripts/companion_ability.gd")
 
-enum State { FOLLOW, ACTIVE, RETURN }
+enum State { FOLLOW, ACTIVE, RETURN, KO }
 
 const FOLLOW_DIST     := 18.0
 const SPEED           := 110.0
@@ -32,6 +33,10 @@ var _level:     int     = 0
 var _xp:        int     = 0
 var _ability:   Node    = null   # CompanionAbility instanciado desde data.ability_scene_path
 
+var _comp_hp:     int  = 0
+var _comp_max_hp: int  = 0
+var _is_ko:       bool = false
+
 var _dir_anim := DirectionAnimator.new()
 
 
@@ -44,7 +49,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if target == null:
+	if target == null or _state == State.KO:
 		return
 	_attack_cd = maxf(0.0, _attack_cd - delta)
 
@@ -61,12 +66,32 @@ func _physics_process(delta: float) -> void:
 
 func set_target(player: Node2D) -> void:
 	target = player
+	_build_frames()
 	_init_ability()
-	if player.has_signal("hurt_by"):
+	_init_hp()
+	if player.has_signal("hurt_by") and not player.hurt_by.is_connected(_on_player_hurt_by):
 		player.hurt_by.connect(_on_player_hurt_by)
 
 
+func reset_progress() -> void:
+	_xp    = 0
+	_level = 0
+	xp_changed.emit(0, _get_xp_to_next())
+	level_changed.emit(1)
+
+
+func get_comp_hp() -> int:
+	return _comp_hp
+
+
+func get_comp_max_hp() -> int:
+	return _comp_max_hp
+
+
 func _init_ability() -> void:
+	if _ability != null and is_instance_valid(_ability):
+		_ability.queue_free()
+		_ability = null
 	if data == null or data.ability_scene_path.is_empty():
 		return
 	if not ResourceLoader.exists(data.ability_scene_path):
@@ -79,6 +104,49 @@ func _init_ability() -> void:
 	add_child(_ability)
 	_ability.hit_landed.connect(_on_hit_landed)
 	_ability.finished.connect(_on_ability_finished)
+
+
+func _init_hp() -> void:
+	_comp_max_hp = _get_max_hp()
+	_comp_hp     = _comp_max_hp
+	_is_ko       = false
+	_state       = State.FOLLOW
+	_sprite.visible       = true
+	_sprite.self_modulate = Color.WHITE
+
+
+func _get_max_hp() -> int:
+	if data == null:
+		return 0
+	var arr := data.max_hp_per_level
+	if arr.is_empty():
+		return 0
+	return arr[mini(_level, arr.size() - 1)]
+
+
+func take_hit_companion(dmg: int) -> void:
+	if _is_ko or dmg <= 0 or _comp_max_hp <= 0:
+		return
+	_comp_hp = maxi(0, _comp_hp - dmg)
+	_sprite.self_modulate = Color(2.0, 1.0, 1.0)
+	var tw := create_tween()
+	tw.tween_property(_sprite, "self_modulate", Color.WHITE, 0.12)
+	FX.damage_number(global_position + Vector2(0.0, -8.0), dmg, Color(1.0, 0.5, 0.0))
+	if _comp_hp <= 0:
+		_enter_ko()
+
+
+func _enter_ko() -> void:
+	_is_ko  = true
+	_state  = State.KO
+	velocity = Vector2.ZERO
+	_sprite.visible = false
+	var comp_name := data.companion_name if data != null else ""
+	CompanionSystem.companion_ko(comp_name)
+	ko_changed.emit(true)
+	FX.particles(global_position, "death")
+	SFX.play("die_monster")
+	notice_requested.emit("¡%s caído! Recupera en 60 s…" % comp_name)
 
 
 # ─── Objetivo de ataque ────────────────────────────────────────────────────────

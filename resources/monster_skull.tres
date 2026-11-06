@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Calavera"
+max_health = 45
+speed = 50.0
+damage = 12
+vision_range = 110.0
+attack_cooldown = 1.3
+gold_min = 4
+gold_max = 8
+sprite_path = "res://assets/Actor/Monster/Skull/SpriteSheet.png"
+essence_id = "skull"
+region = "pantano"
+essences_required = 15

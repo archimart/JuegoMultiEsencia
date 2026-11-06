@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3]
+
+[ext_resource type="Script" path="res://scripts/familiar_data.gd" id="1_fd"]
+
+[resource]
+script = ExtResource("1_fd")
+familiar_name = "Corazón"
+ability_id = "heart"
+max_hp = 20
+damage = 4
+attack_cooldown = 1.2
+move_speed = 130.0
+attack_range = 42.0

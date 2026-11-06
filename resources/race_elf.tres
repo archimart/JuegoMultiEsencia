@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/race_data.gd" id="1_script"]
-[ext_resource type="Resource" path="res://resources/companion_hawk.tres" id="2_comp"]
+[ext_resource type="Resource" path="res://resources/companion_spirit.tres" id="2_comp"]
 
 [resource]
 script = ExtResource("1_script")
@@ -13,3 +13,10 @@ max_hp = 20
 speed = 110.0
 damage_multiplier = 0.8
 companion_data = ExtResource("2_comp")
+region = "forest"
+modulate_m = Color(1, 1, 1, 1)
+modulate_f = Color(1, 1, 1, 1)
+hair_color_m = Color(0.761, 0.557, 0.239, 1)
+hair_color_f = Color(0.796, 0.757, 0.714, 1)
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_ELF_clearly_an_red", "res://assets/caracter/A_fantasy_ELF_clearly_an_dark"]
+sprite_variant_names_f = ["Rojo", "Oscura"]

@@ -20,9 +20,10 @@ func _ready() -> void:
 
 
 func _load_recipes() -> void:
-	var bow: RecipeData = load("res://resources/recipe_bow.tres")
-	var arrows: RecipeData = load("res://resources/recipe_arrows.tres")
-	_recipes = [bow, arrows]
+	var bow: RecipeData        = load("res://resources/recipe_bow.tres")
+	var arrows: RecipeData     = load("res://resources/recipe_arrows.tres")
+	var iron_ingot: RecipeData = load("res://resources/recipe_iron_ingot.tres")
+	_recipes = [bow, arrows, iron_ingot]
 
 
 func _unhandled_input(event: InputEvent) -> void:
