@@ -16,6 +16,28 @@ var _player_ref: Node2D        = null
 func _ready() -> void:
 	_build_theme()
 	get_tree().root.theme = game_theme
+	_apply_saved_options()
+
+
+func _apply_saved_options() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load("user://options.cfg") != OK:
+		return
+	var sfx_vol: float = cfg.get_value("audio", "sfx_vol", 1.0)
+	var idx := AudioServer.get_bus_index("Master")
+	if idx >= 0:
+		AudioServer.set_bus_volume_db(idx, linear_to_db(sfx_vol) if sfx_vol > 0.0 else -80.0)
+	var fullscreen: bool = cfg.get_value("display", "fullscreen", false)
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	var scale: int = cfg.get_value("display", "ui_scale", 2)
+	scale = clampi(scale, 1, 4)
+	if not fullscreen:
+		var w := 640 * scale
+		var h := 360 * scale
+		DisplayServer.window_set_size(Vector2i(w, h))
+		var screen_sz := DisplayServer.screen_get_size()
+		DisplayServer.window_set_position(Vector2i((screen_sz.x - w) / 2, (screen_sz.y - h) / 2))
 
 
 func register_player(player: Node2D) -> void:
