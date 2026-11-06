@@ -51,6 +51,8 @@ var _comp_xp_fill: ColorRect
 # Refs hotbar (arrays en paralelo, tamaño HOTBAR_N)
 var _hb_icons:  Array[TextureRect] = []
 var _hb_counts: Array[Label]       = []
+var _hb_slots:  Array[Panel]       = []
+var _selected_hb_slot: int         = 0
 
 # Inventario (null cuando está cerrado)
 var _inv_panel: Panel         = null
@@ -561,8 +563,18 @@ func _build_hotbar() -> void:
 		var slot := Panel.new()
 		slot.position = Vector2(sx, HOTBAR_PAD)
 		slot.size     = Vector2(HOTBAR_S, HOTBAR_S)
-		slot.add_theme_stylebox_override("panel", _sb_slot())
+		slot.add_theme_stylebox_override("panel", _sb_slot_selected() if i == 0 else _sb_slot())
 		root.add_child(slot)
+		_hb_slots.append(slot)
+
+		# Número de tecla (1–8) en esquina superior izquierda
+		var num_lbl := Label.new()
+		num_lbl.position = Vector2(1, 0)
+		num_lbl.size     = Vector2(7, 7)
+		num_lbl.text     = str(i + 1)
+		num_lbl.add_theme_font_size_override("font_size", 5)
+		num_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+		slot.add_child(num_lbl)
 
 		const ICON_S := 12
 		const OFF    := (HOTBAR_S - ICON_S) / 2
@@ -789,6 +801,34 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("companions"):
 		get_viewport().set_input_as_handled()
 		_toggle_comp_panel()
+	elif event is InputEventKey and (event as InputEventKey).pressed \
+			and not (event as InputEventKey).echo:
+		var kc := (event as InputEventKey).keycode
+		if kc >= KEY_1 and kc <= KEY_8:
+			get_viewport().set_input_as_handled()
+			_select_hotbar_slot(kc - KEY_1)
+
+
+func _select_hotbar_slot(idx: int) -> void:
+	if idx < 0 or idx >= HOTBAR_N:
+		return
+	# Quita resaltado del slot anterior
+	if _selected_hb_slot < _hb_slots.size():
+		_hb_slots[_selected_hb_slot].add_theme_stylebox_override("panel", _sb_slot())
+	_selected_hb_slot = idx
+	_hb_slots[_selected_hb_slot].add_theme_stylebox_override("panel", _sb_slot_selected())
+	# Activa el ítem del slot
+	if _player == null:
+		return
+	var keys: Array = _player.inventory.keys()
+	if idx >= keys.size():
+		return
+	var item_id: String = keys[idx]
+	if item_id == "health_potion" and _player.has_method("_use_health_potion"):
+		_player.call("_use_health_potion")
+	elif item_id.begins_with("egg_"):
+		if has_node("/root/FamiliarSystem"):
+			FamiliarSystem.try_hatch(_player)
 
 
 # ── Utilidades ────────────────────────────────────────────────────────────────
@@ -1314,6 +1354,15 @@ func _sb_slot_equipped() -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color          = Color(0.14, 0.11, 0.04, 0.90)
 	s.border_color      = Color(1.0, 0.85, 0.2)
+	s.border_width_left  = 1; s.border_width_right  = 1
+	s.border_width_top   = 1; s.border_width_bottom = 1
+	return s
+
+
+func _sb_slot_selected() -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color          = Color(0.18, 0.18, 0.28, 0.95)
+	s.border_color      = Color(0.4, 0.8, 1.0)
 	s.border_width_left  = 1; s.border_width_right  = 1
 	s.border_width_top   = 1; s.border_width_bottom = 1
 	return s
