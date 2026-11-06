@@ -66,6 +66,9 @@ var _cave_exit_area:  Area2D         = null
 var _in_cave:         bool           = false
 var _transitioning:   bool           = false
 
+var _pause_scene:     PackedScene = preload("res://scenes/pause_menu.tscn")
+var _pause_menu:      CanvasLayer = null
+
 var _tree_scene:      PackedScene = preload("res://scenes/tree.tscn")
 var _table_scene:     PackedScene = preload("res://scenes/crafting_table.tscn")
 var _chest_scene:     PackedScene = preload("res://scenes/chest.tscn")
@@ -226,6 +229,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if OS.is_debug_build():
 		match event.keycode:
 			KEY_F3: _toggle_debug_overlay()
+	if event.is_action_pressed("ui_cancel") and not UIManager.is_menu_open() \
+			and (_pause_menu == null or not is_instance_valid(_pause_menu)):
+		get_viewport().set_input_as_handled()
+		_open_pause()
+		return
 	if event.is_action_pressed("help"):
 		_toggle_help_panel()
 		return
@@ -234,6 +242,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _player.global_position.distance_to(_trainer.global_position) < 40.0:
 				_toggle_trainer_panel()
 				return
+
+
+func _open_pause() -> void:
+	_pause_menu = _pause_scene.instantiate()
+	_pause_menu.resume_requested.connect(func() -> void: _pause_menu = null)
+	add_child(_pause_menu)
 
 
 func _toggle_debug_overlay() -> void:
