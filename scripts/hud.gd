@@ -809,18 +809,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			and not (event as InputEventKey).echo:
 		var kc := (event as InputEventKey).keycode
 		if kc >= KEY_1 and kc <= KEY_8:
-			get_viewport().set_input_as_handled()
-			_select_hotbar_slot(kc - KEY_1)
+			# Solo actualiza el slot visual; NO consume el evento
+			# para que skill_1/skill_2/skill_3 del jugador sigan funcionando
+			_select_hotbar_slot_visual(kc - KEY_1)
 
 
-func _select_hotbar_slot(idx: int) -> void:
+func _select_hotbar_slot_visual(idx: int) -> void:
 	if idx < 0 or idx >= HOTBAR_N:
 		return
-	# Quita resaltado del slot anterior
 	if _selected_hb_slot < _hb_slots.size():
 		_hb_slots[_selected_hb_slot].add_theme_stylebox_override("panel", _sb_slot())
 	_selected_hb_slot = idx
-	_hb_slots[_selected_hb_slot].add_theme_stylebox_override("panel", _sb_slot_selected())
+	if _selected_hb_slot < _hb_slots.size():
+		_hb_slots[_selected_hb_slot].add_theme_stylebox_override("panel", _sb_slot_selected())
+
+
+func _select_hotbar_slot(idx: int) -> void:
+	_select_hotbar_slot_visual(idx)
 	# Activa el ítem del slot
 	if _player == null:
 		return
