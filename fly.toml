@@ -3,6 +3,9 @@ primary_region = "mia"
 
 [build]
 
+[deploy]
+  strategy = "immediate"
+
 [[vm]]
   size = "shared-cpu-1x"
   memory = "256mb"
@@ -10,6 +13,9 @@ primary_region = "mia"
 [[services]]
   protocol = "udp"
   internal_port = 7777
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 1
 
   [[services.ports]]
     port = 7777
