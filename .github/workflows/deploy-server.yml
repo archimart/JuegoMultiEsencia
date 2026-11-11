@@ -11,30 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Instalar Godot 4.6.2
-        run: |
-          wget -q "https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_linux.x86_64.zip" -O godot.zip
-          unzip -q godot.zip
-          sudo mv "Godot_v4.6.2-stable_linux.x86_64" /usr/local/bin/godot
-          sudo chmod +x /usr/local/bin/godot
-
-      - name: Instalar export templates
-        run: |
-          TEMPLATES_DIR="$HOME/.local/share/godot/export_templates/4.6.2.stable"
-          mkdir -p "$TEMPLATES_DIR"
-          wget -q "https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_export_templates.tpz" -O templates.tpz
-          unzip -q templates.tpz
-          mv templates/* "$TEMPLATES_DIR/"
-
-      - name: Exportar servidor Linux
-        run: |
-          mkdir -p build/server
-          godot --headless --export-release "Linux Server" build/server/game.x86_64
-
       - name: Instalar flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy a Fly.io
-        run: flyctl deploy --local-only
+        run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
