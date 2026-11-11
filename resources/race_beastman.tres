@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/companion_raccoon.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+race_name = "Bestia"
+description = "Rápido y feroz. El mapache roba objetos a los monstruos."
+sprite_dir_path_m = "res://assets/caracter/A_fantasy_male_BEASTMAN-Idle"
+sprite_dir_path_f = "res://assets/caracter/A_fantasy_female_BEASTMA-Idle"
+max_hp = 22
+speed = 100.0
+damage_multiplier = 1.4
+region = "forest"
+companion_data = ExtResource("2")
+sprite_variant_dirs_m = ["res://assets/caracter/A_fantasy_male_BEASTMAN-A_fantasy_male_dark"]
+sprite_variant_names_m = ["Oscuro"]
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_female_BEASTMA-A_fantasy_female_dar"]
+sprite_variant_names_f = ["Oscuro"]

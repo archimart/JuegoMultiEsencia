@@ -39,6 +39,11 @@ custom_minimum_size = Vector2(160, 20)
 text = "JUGAR"
 theme_override_font_sizes/font_size = 10
 
+[node name="BtnMulti" type="Button" parent="Center/VBox"]
+custom_minimum_size = Vector2(160, 20)
+text = "MULTIJUGADOR"
+theme_override_font_sizes/font_size = 10
+
 [node name="BtnOptions" type="Button" parent="Center/VBox"]
 custom_minimum_size = Vector2(160, 20)
 text = "OPCIONES"

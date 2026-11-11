@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Oso"
+max_health = 80
+speed = 42.0
+damage = 14
+vision_range = 95.0
+attack_cooldown = 1.4
+gold_min = 5
+gold_max = 9
+sprite_path = "res://assets/Actor/Monster/Bear/SpriteSheet.png"
+essence_id = "bear"
+region = "bosque"
+essences_required = 18

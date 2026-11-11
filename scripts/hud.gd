@@ -81,6 +81,9 @@ var _hint_lbl: Label
 # Slot de arma equipada (fila 4 del panel de stats)
 var _weapon_lbl: Label = null
 
+# Indicador de montura
+var _mount_lbl: Label = null
+
 # Barra de maná (Mago)
 var _mana_bg:   ColorRect = null
 var _mana_fill: ColorRect = null
@@ -156,6 +159,24 @@ func _process(delta: float) -> void:
 	if _fam_hp_tick >= 0.25:
 		_fam_hp_tick = 0.0
 		_update_fam_hp_bars()
+	_update_mount_lbl()
+
+
+func _update_mount_lbl() -> void:
+	if _mount_lbl == null or _player == null:
+		return
+	var mounted: bool = bool(_player.get("_mounted"))
+	if not mounted:
+		_mount_lbl.visible = false
+		return
+	var mount_node = _player.get("_mount")
+	var name_str := "Montado"
+	if mount_node != null and is_instance_valid(mount_node):
+		var data = mount_node.get("_data")
+		if data != null:
+			name_str = str(data.get("mount_name"))
+	_mount_lbl.text    = ">> " + name_str
+	_mount_lbl.visible = true
 
 
 func _update_fam_hp_bars() -> void:
@@ -274,6 +295,12 @@ func _build_stats() -> void:
 	_weapon_lbl.size = Vector2(84, 9)
 	_weapon_lbl.add_theme_color_override("font_color", C_MUTED)
 
+	# Indicador de montura (fila 5, oculto por defecto)
+	_mount_lbl = _lbl("", Vector2(4, 45), _stats_panel, 6)
+	_mount_lbl.size = Vector2(84, 9)
+	_mount_lbl.visible = false
+	_mount_lbl.add_theme_color_override("font_color", Color(0.95, 0.75, 0.30))
+
 
 func set_companion(comp: Node) -> void:
 	_companion_node = comp
@@ -350,8 +377,10 @@ func _update_hp() -> void:
 func _update_mana(current: int, total: int) -> void:
 	if _mana_fill == null:
 		return
-	if total <= 0:
-		_mana_fill.size.x = 0.0
+	var has_mana := total > 0
+	_mana_bg.visible   = has_mana
+	_mana_fill.visible = has_mana
+	if not has_mana:
 		return
 	_mana_fill.size.x = 50.0 * clampf(float(current) / float(total), 0.0, 1.0)
 
@@ -359,7 +388,7 @@ func _update_mana(current: int, total: int) -> void:
 func _update_player_level(lvl: int) -> void:
 	if _player_lvl_lbl == null:
 		return
-	_player_lvl_lbl.text = "MÁX" if lvl > 9 else "Nv.%d" % lvl
+	_player_lvl_lbl.text = "MÁX" if lvl >= 45 else "Nv.%d" % lvl
 
 
 func _update_player_xp(current: int, to_next: int) -> void:
@@ -1355,12 +1384,7 @@ func _build_skill_bar(cd: Resource) -> void:
 
 func _on_class_changed(cd: Resource) -> void:
 	_build_skill_bar(cd)
-	var is_mage := str(cd.get("class_label")) == "Mago"
-	if _mana_bg != null:
-		_mana_bg.visible = is_mage
-	if _mana_fill != null:
-		_mana_fill.visible = is_mage
-	if is_mage and _player != null:
+	if _player != null:
 		_update_mana(int(_player.get("mana")), int(_player.get("max_mana")))
 
 

@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7wjkaymssewc"
-path="res://.godot/imported/SpriteSheet.png-d31d17f992447c7c8ae7f23ed6271502.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://assets/Actor/Monster/Butterfly/SpriteSheet.png"
-dest_files=["res://.godot/imported/SpriteSheet.png-d31d17f992447c7c8ae7f23ed6271502.ctex"]
 
 [params]
 

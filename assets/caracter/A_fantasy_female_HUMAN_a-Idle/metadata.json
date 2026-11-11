@@ -1,0 +1,125 @@
+{
+  "group_id": "03122db8-dbc8-448e-9219-a4dce9b7b776",
+  "states": [
+    {
+      "character": {
+        "id": "16790f78-c29f-4a9d-a2f0-dc5df792835b",
+        "name": "Idle",
+        "prompt": "A fantasy female HUMAN adventurer, clearly human. Long brown hair tied in a ponytail, friendly face, slim athletic build. Blue tunic over a light leather vest, brown belt and boots, small short sword at the hip. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-06T03:31:40.398861+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "east": [
+              "Idle/animations/Walking/east/frame_000.png",
+              "Idle/animations/Walking/east/frame_001.png",
+              "Idle/animations/Walking/east/frame_002.png",
+              "Idle/animations/Walking/east/frame_003.png",
+              "Idle/animations/Walking/east/frame_004.png",
+              "Idle/animations/Walking/east/frame_005.png",
+              "Idle/animations/Walking/east/frame_006.png",
+              "Idle/animations/Walking/east/frame_007.png"
+            ],
+            "west": [
+              "Idle/animations/Walking/west/frame_000.png",
+              "Idle/animations/Walking/west/frame_001.png",
+              "Idle/animations/Walking/west/frame_002.png",
+              "Idle/animations/Walking/west/frame_003.png",
+              "Idle/animations/Walking/west/frame_004.png",
+              "Idle/animations/Walking/west/frame_005.png",
+              "Idle/animations/Walking/west/frame_006.png",
+              "Idle/animations/Walking/west/frame_007.png"
+            ],
+            "north": [
+              "Idle/animations/Walking/north/frame_000.png",
+              "Idle/animations/Walking/north/frame_001.png",
+              "Idle/animations/Walking/north/frame_002.png",
+              "Idle/animations/Walking/north/frame_003.png",
+              "Idle/animations/Walking/north/frame_004.png",
+              "Idle/animations/Walking/north/frame_005.png",
+              "Idle/animations/Walking/north/frame_006.png",
+              "Idle/animations/Walking/north/frame_007.png"
+            ],
+            "south": [
+              "Idle/animations/Walking/south/frame_000.png",
+              "Idle/animations/Walking/south/frame_001.png",
+              "Idle/animations/Walking/south/frame_002.png",
+              "Idle/animations/Walking/south/frame_003.png",
+              "Idle/animations/Walking/south/frame_004.png",
+              "Idle/animations/Walking/south/frame_005.png",
+              "Idle/animations/Walking/south/frame_006.png",
+              "Idle/animations/Walking/south/frame_007.png"
+            ]
+          },
+          "seated_riding_posture_in_a_mounting_position_hands": {
+            "north": [
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_000.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_001.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_002.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_003.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_004.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_005.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_006.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_007.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_008.png"
+            ],
+            "east": [
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_000.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_001.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_002.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_003.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_004.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_005.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_006.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_007.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_008.png"
+            ],
+            "west": [
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_000.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_001.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_002.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_003.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_004.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_005.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_006.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_007.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_008.png"
+            ],
+            "south": [
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_000.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_001.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_002.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_003.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_004.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_005.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_006.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_007.png",
+              "Idle/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-07T05:30:10.761649"
+}

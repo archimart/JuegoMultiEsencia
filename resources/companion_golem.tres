@@ -10,6 +10,7 @@ sprite_walk_tex = "res://assets/Actor/Monster/Cyclope/SpriteSheet.png"
 sprite_tile_size = 16
 sprite_walk_frames = 4
 sprite_fps = 4.0
+ability_scene_path = "res://scenes/abilities/golem_taunt_ability.tscn"
 damage_per_level = [6, 10, 14, 18, 24]
 cooldown_per_level = [2.5, 2.2, 1.8, 1.5, 1.2]
 xp_to_next = [5, 15, 30, 60, 0]

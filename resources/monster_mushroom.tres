@@ -16,3 +16,4 @@ sprite_path = "res://assets/Actor/Monster/Mushroom/mushroom.png"
 essence_id = "mushroom"
 region = "bosque"
 essences_required = 10
+is_static = true

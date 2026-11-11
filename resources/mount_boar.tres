@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MountData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/mount_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+mount_id   = "boar"
+mount_name = "Jabalí Blindado"
+speed      = 150.0
+sprite_dir = "res://assets/monturas/armored_wild_boar_mount-Idle"

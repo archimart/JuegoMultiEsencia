@@ -5,9 +5,11 @@ const SPAWN_INTERVAL := 3.5
 const MIN_DIST       := 130.0
 const MAX_DIST       := 480.0
 const WORLD_MIN      := 24.0
-const WORLD_MAX      := 3176.0
-const VILLAGE_POS    := Vector2(1584.0, 1584.0)
-const VILLAGE_SAFE   := 200.0
+const WORLD_MAX_X    := 3700.0   # límite X de superficie (cueva empieza en 4000)
+const WORLD_MAX_Y    := 6376.0   # límite Y de superficie (400 tiles × 16 − margen)
+const VILLAGE_POS    := Vector2(3200.0, 3200.0)   # spawn del mapa 400×400
+# Rect2 de la ciudad (tiles 152-248 × 16 px, con margen de 100 px)
+const CITY_RECT      := Rect2(2332.0, 2332.0, 1736.0, 1736.0)
 
 # Límite en X que separa el mundo de la cueva
 const CAVE_MIN_X     := 3800.0
@@ -17,33 +19,44 @@ const ZONE_NEAR      := 450.0
 const ZONE_MID       := 950.0
 
 # Monstruos por zona: [near, mid, far]
+# Zona cercana — fáciles, lentos, algunos huyen
 var _scenes_near: Array[PackedScene] = [
 	preload("res://scenes/monster_heart.tscn"),
 	preload("res://scenes/monster_racoon.tscn"),
 	preload("res://scenes/monster_slime.tscn"),
 	preload("res://scenes/monster_mushroom.tscn"),
+	preload("res://scenes/monster_mouse.tscn"),
 ]
+# Zona media — moderados, más agresivos
 var _scenes_mid: Array[PackedScene] = [
 	preload("res://scenes/monster_slime.tscn"),
 	preload("res://scenes/monster_mushroom.tscn"),
 	preload("res://scenes/monster_spider.tscn"),
 	preload("res://scenes/monster_bat.tscn"),
 	preload("res://scenes/monster_golem.tscn"),
+	preload("res://scenes/monster_bear.tscn"),
+	preload("res://scenes/monster_racoon.tscn"),
 ]
+# Zona lejana — peligrosos, con comportamientos especiales
 var _scenes_far: Array[PackedScene] = [
 	preload("res://scenes/monster_spider.tscn"),
-	preload("res://scenes/monster_golem.tscn"),
 	preload("res://scenes/monster_scorpion.tscn"),
 	preload("res://scenes/monster_snake.tscn"),
 	preload("res://scenes/monster_skull.tscn"),
 	preload("res://scenes/monster_spirit.tscn"),
+	preload("res://scenes/monster_demon.tscn"),
+	preload("res://scenes/monster_cyclope.tscn"),
+	preload("res://scenes/monster_trex.tscn"),
+	preload("res://scenes/monster_bear.tscn"),
+	preload("res://scenes/monster_dragon.tscn"),
 ]
-# Monstruos de cueva (solo spawnean si el jugador está en la cueva)
+# Cueva — oscura y peligrosa
 var _scenes_cave: Array[PackedScene] = [
 	preload("res://scenes/monster_bat.tscn"),
 	preload("res://scenes/monster_scorpion.tscn"),
 	preload("res://scenes/monster_skull.tscn"),
 	preload("res://scenes/monster_spirit.tscn"),
+	preload("res://scenes/monster_cyclope.tscn"),
 ]
 
 var _player: Node2D = null
@@ -85,18 +98,18 @@ func _try_spawn() -> void:
 		if in_cave:
 			# Mantener dentro de la cueva
 			pos.x = clampf(pos.x, CAVE_MIN_X, CAVE_MIN_X + 1280.0)
-			pos.y = clampf(pos.y, WORLD_MIN,  WORLD_MAX)
+			pos.y = clampf(pos.y, WORLD_MIN,  WORLD_MAX_Y)
 			var m: Node2D = _scenes_cave[randi() % _scenes_cave.size()].instantiate()
 			m.global_position = pos
 			get_tree().current_scene.add_child(m)
 			return
 		else:
-			pos.x = clampf(pos.x, WORLD_MIN, WORLD_MAX)
-			pos.y = clampf(pos.y, WORLD_MIN, WORLD_MAX)
-			# Excluir cueva y villa
+			pos.x = clampf(pos.x, WORLD_MIN, WORLD_MAX_X)
+			pos.y = clampf(pos.y, WORLD_MIN, WORLD_MAX_Y)
+			# Excluir cueva y ciudad
 			if pos.x >= CAVE_MIN_X:
 				continue
-			if pos.distance_to(VILLAGE_POS) < VILLAGE_SAFE:
+			if CITY_RECT.has_point(pos):
 				continue
 			var scene_pool := _pool_for(pos)
 			var m: Node2D = scene_pool[randi() % scene_pool.size()].instantiate()

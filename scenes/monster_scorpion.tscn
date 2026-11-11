@@ -4,8 +4,8 @@
 [ext_resource type="Resource" path="res://resources/monster_scorpion.tres" id="2_dat"]
 
 [sub_resource type="CapsuleShape2D" id="col"]
-radius = 5.0
-height = 4.0
+radius = 6.0
+height = 7.0
 
 [node name="MonsterScorpion" type="CharacterBody2D"]
 collision_layer = 8
@@ -16,5 +16,5 @@ data = ExtResource("2_dat")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2)
+position = Vector2(0, -5)
 shape = SubResource("col")

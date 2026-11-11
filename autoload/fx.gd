@@ -74,6 +74,7 @@ func particles(world_pos: Vector2, type: String) -> void:
 		"ice_hit":   _cfg_ice_hit(p)
 		"ice_trail": _cfg_ice_trail(p)
 		"mine":      _cfg_mine(p)
+		"level_up":  _cfg_level_up(p)
 	root.add_child(p)
 	p.global_position = world_pos  # siempre después de add_child
 	p.emitting = true
@@ -285,3 +286,16 @@ func _cfg_mine(p: CPUParticles2D) -> void:
 	p.scale_amount_min     = 1.0
 	p.scale_amount_max     = 2.5
 	p.color                = Color(0.6, 0.55, 0.5)
+
+
+func _cfg_level_up(p: CPUParticles2D) -> void:
+	p.amount               = 40
+	p.lifetime             = 1.1
+	p.explosiveness        = 1.0
+	p.spread               = 180.0
+	p.initial_velocity_min = 40.0
+	p.initial_velocity_max = 120.0
+	p.gravity              = Vector2(0.0, -20.0)
+	p.scale_amount_min     = 2.0
+	p.scale_amount_max     = 4.0
+	p.color                = Color(1.0, 0.92, 0.2)

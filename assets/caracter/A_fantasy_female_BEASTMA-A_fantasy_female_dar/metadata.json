@@ -1,0 +1,79 @@
+{
+  "group_id": "ceacc97d-507d-4b31-ac1d-f48981055f77",
+  "states": [
+    {
+      "character": {
+        "id": "c46fca26-c025-433f-97aa-399129d4c683",
+        "name": "A fantasy female dar",
+        "prompt": "A fantasy female BEASTMAN werewolf, clearly a wolf-woman. Brown furry wolf head with pointed ears and a snout, long brown hair mane flowing down to the shoulders, upright muscular human body covered in brown fur, clawed hands, a tail. Simple leather kilt and a purple chest wrap. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-07T02:52:14.164833+00:00"
+      },
+      "folder": "A_fantasy_female_dar",
+      "frames": {
+        "rotations": {
+          "south": "A_fantasy_female_dar/rotations/south.png",
+          "south-east": "A_fantasy_female_dar/rotations/south-east.png",
+          "east": "A_fantasy_female_dar/rotations/east.png",
+          "north-east": "A_fantasy_female_dar/rotations/north-east.png",
+          "north": "A_fantasy_female_dar/rotations/north.png",
+          "north-west": "A_fantasy_female_dar/rotations/north-west.png",
+          "west": "A_fantasy_female_dar/rotations/west.png",
+          "south-west": "A_fantasy_female_dar/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "west": [
+              "A_fantasy_female_dar/animations/Walking/west/frame_000.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_001.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_002.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_003.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_004.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_005.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_006.png",
+              "A_fantasy_female_dar/animations/Walking/west/frame_007.png"
+            ],
+            "north": [
+              "A_fantasy_female_dar/animations/Walking/north/frame_000.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_001.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_002.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_003.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_004.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_005.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_006.png",
+              "A_fantasy_female_dar/animations/Walking/north/frame_007.png"
+            ],
+            "east": [
+              "A_fantasy_female_dar/animations/Walking/east/frame_000.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_001.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_002.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_003.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_004.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_005.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_006.png",
+              "A_fantasy_female_dar/animations/Walking/east/frame_007.png"
+            ],
+            "south": [
+              "A_fantasy_female_dar/animations/Walking/south/frame_000.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_001.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_002.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_003.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_004.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_005.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_006.png",
+              "A_fantasy_female_dar/animations/Walking/south/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-07T02:56:47.235401"
+}

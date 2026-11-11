@@ -11,6 +11,15 @@ extends Resource
 @export var gold_min:        int     = 1
 @export var gold_max:        int     = 3
 @export var sprite_path:     String  = ""
+@export var frame_size:      int     = 16
+
+# ── Comportamientos especiales ───────────────────────────────────────────────
+@export var flees_when_hurt:  bool  = false  # huye cuando le queda poca vida
+@export var flee_threshold:   float = 0.30   # porcentaje de HP al que huye
+@export var is_static:        bool  = false  # no persigue, solo ataca en rango
+@export var poisons_on_hit:   bool  = false  # envenena al jugador al pegar
+@export var poison_dps:       float = 2.0
+@export var poison_duration:  float = 4.0
 
 # ── Sistema de esencias y desbloqueo de compañeros ──────────────────────────────
 ## ID único para contar esencias (ej. "heart", "raccoon"). Dejar vacío si no da esencias.

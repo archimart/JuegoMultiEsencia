@@ -1,16 +1,20 @@
 [gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://c4g2yh0qq15h1" path="res://scripts/race_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/companion_golem.tres" id="2"]
 
 [resource]
 script = ExtResource("1")
 race_name = "Enano"
 description = "Muy resistente, lento. Golem lo protege."
-walk_tex_path = "res://assets/Actor/Character/Caveman/SeparateAnim/Walk.png"
-idle_tex_path = "res://assets/Actor/Character/Caveman/SeparateAnim/Idle.png"
+sprite_dir_path_m = "res://assets/caracter/A_fantasy_male_DWARF_cle-Idle"
+sprite_dir_path_f = "res://assets/caracter/A_fantasy_female_DWARF_c-Idle"
 max_hp = 50
 speed = 55.0
 damage_multiplier = 1.0
 companion_data = ExtResource("2")
 region = "mountain"
+sprite_variant_dirs_m = ["res://assets/caracter/A_fantasy_male_DWARF_cle-A_fantasy_male_DARK"]
+sprite_variant_names_m = ["Oscuro"]
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_female_DWARF_c-A_fantasy_female_DAR"]
+sprite_variant_names_f = ["Oscuro"]

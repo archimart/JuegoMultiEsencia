@@ -7,10 +7,14 @@
 script = ExtResource("1")
 race_name = "Orco"
 description = "Fuerza bruta. Compañero: Lobo de guerra"
-walk_tex_path = "res://assets/Actor/Character/GreenPig/SeparateAnim/Walk.png"
-idle_tex_path = "res://assets/Actor/Character/GreenPig/SeparateAnim/Idle.png"
+sprite_dir_path_m = "res://assets/caracter/A_fantasy_male_ORC_warri-Idle"
+sprite_dir_path_f = "res://assets/caracter/A_fantasy_female_ORC_war-Idle"
 max_hp = 45
 speed = 70.0
 damage_multiplier = 1.5
 companion_data = ExtResource("2")
 region = "desert"
+sprite_variant_dirs_m = ["res://assets/caracter/A_fantasy_male_ORC_warri-A_fantasy_male_dark"]
+sprite_variant_names_m = ["Oscuro"]
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_female_ORC_war-A_fantasy_female_dar"]
+sprite_variant_names_f = ["Oscuro"]

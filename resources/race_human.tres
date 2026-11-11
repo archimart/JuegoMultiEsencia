@@ -7,10 +7,14 @@
 script = ExtResource("1")
 race_name = "Humano"
 description = "Versátil. Compañero: Halcón explorador"
-walk_tex_path = "res://assets/Actor/Character/Hunter/SeparateAnim/Walk.png"
-idle_tex_path = "res://assets/Actor/Character/Hunter/SeparateAnim/Idle.png"
+sprite_dir_path_m = "res://assets/caracter/A_fantasy_male_HUMAN_adv-Idle"
+sprite_dir_path_f = "res://assets/caracter/A_fantasy_female_HUMAN_a-Idle"
 max_hp = 30
 speed = 80.0
 damage_multiplier = 1.0
 companion_data = ExtResource("2")
 region = "prairie"
+sprite_variant_dirs_m = ["res://assets/caracter/A_fantasy_male_HUMAN_adv-A_fantasy_male_dark"]
+sprite_variant_names_m = ["Oscuro"]
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_female_HUMAN_a-A_fantasy_female_dar"]
+sprite_variant_names_f = ["Oscuro"]

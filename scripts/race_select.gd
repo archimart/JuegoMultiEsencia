@@ -7,6 +7,7 @@ const RACE_PATHS: Array[String] = [
 	"res://resources/race_elf.tres",
 	"res://resources/race_dwarf.tres",
 	"res://resources/race_undead.tres",
+	"res://resources/race_beastman.tres",
 ]
 const CLASS_PATHS: Array[String] = [
 	"res://resources/class_warrior.tres",
@@ -549,7 +550,11 @@ func _on_start_pressed() -> void:
 	GameState.selected_class          = _classes[_selected_class]
 	GameState.selected_hair_color     = _selected_hair_color
 	GameState.selected_sprite_variant = _selected_variant
-	get_tree().change_scene_to_file("res://scenes/world.tscn")
+	if GameState.in_lobby:
+		GameState.in_lobby = false
+		get_tree().change_scene_to_file("res://scenes/lobby.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/world.tscn")
 
 
 # ── Bonus de afinidad ─────────────────────────────────────────────────────────

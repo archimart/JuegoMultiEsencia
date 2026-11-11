@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Demonio"
+max_health = 70
+speed = 55.0
+damage = 16
+vision_range = 120.0
+attack_cooldown = 1.2
+gold_min = 6
+gold_max = 12
+sprite_path = "res://assets/Actor/Monster/Demon/SpriteSheet.png"
+frame_size = 32
+essence_id = "demon"
+region = "bosque_oscuro"
+essences_required = 20

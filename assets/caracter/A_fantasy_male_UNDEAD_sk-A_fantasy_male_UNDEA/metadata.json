@@ -1,0 +1,79 @@
+{
+  "group_id": "d19d5b1b-0277-47ab-bbd5-ea742e3bf2cc",
+  "states": [
+    {
+      "character": {
+        "id": "1fcdfb23-0769-4417-bab0-75bdb4081b1d",
+        "name": "A fantasy male UNDEA",
+        "prompt": "A fantasy male UNDEAD skeleton warrior, clearly undead. White bone skull with glowing blue eye lights, visible bony arms and legs, thin body. Torn brown cloak, rusty iron shoulder plate, old leather belt. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-07T02:20:12.028651+00:00"
+      },
+      "folder": "A_fantasy_male_UNDEA",
+      "frames": {
+        "rotations": {
+          "south": "A_fantasy_male_UNDEA/rotations/south.png",
+          "south-east": "A_fantasy_male_UNDEA/rotations/south-east.png",
+          "east": "A_fantasy_male_UNDEA/rotations/east.png",
+          "north-east": "A_fantasy_male_UNDEA/rotations/north-east.png",
+          "north": "A_fantasy_male_UNDEA/rotations/north.png",
+          "north-west": "A_fantasy_male_UNDEA/rotations/north-west.png",
+          "west": "A_fantasy_male_UNDEA/rotations/west.png",
+          "south-west": "A_fantasy_male_UNDEA/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "east": [
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_000.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_001.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_002.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_003.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_004.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_005.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_006.png",
+              "A_fantasy_male_UNDEA/animations/Walking/east/frame_007.png"
+            ],
+            "north": [
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_000.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_001.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_002.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_003.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_004.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_005.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_006.png",
+              "A_fantasy_male_UNDEA/animations/Walking/north/frame_007.png"
+            ],
+            "west": [
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_000.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_001.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_002.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_003.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_004.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_005.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_006.png",
+              "A_fantasy_male_UNDEA/animations/Walking/west/frame_007.png"
+            ],
+            "south": [
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_000.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_001.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_002.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_003.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_004.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_005.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_006.png",
+              "A_fantasy_male_UNDEA/animations/Walking/south/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-07T02:49:25.994336"
+}

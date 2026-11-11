@@ -18,3 +18,5 @@ essence_id = "racoon"
 region = "forest"
 companion_data = ExtResource("2_comp")
 essences_required = 15
+flees_when_hurt = true
+flee_threshold = 0.35

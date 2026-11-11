@@ -4,7 +4,7 @@
 @tool
 extends EditorScript
 
-const MAP_PATH   := "res://assets/maps/test_map_200x200.png"
+const MAP_PATH   := "res://assets/maps/world_400x400.png"
 const CHUNK_SIZE := 64
 const TILE_PX    := 16
 const CHUNK_DIR  := "res://scenes/chunks/"
@@ -18,6 +18,8 @@ const TS_BUILDING := "res://resources/city_building_tileset.tres"
 # Tilesets que bake_chunks crea si no existen
 const TS_FLOOR   := "res://resources/floor_tileset.tres"
 const TS_NATURE  := "res://resources/nature_tileset.tres"
+# Tileset de terrenos con transiciones (creado por setup_tilesets.gd)
+const TS_TERRAIN := "res://resources/world_terrain_tileset.tres"
 
 # Paleta (hex sin #)
 const GRASS      := "4caf50"
@@ -63,6 +65,12 @@ var _houses:  Array  = []   # [{rect, door_dir}]
 var _markers: Dictionary = {"spawn": [], "cave": [], "poi": []}
 var _palette: Dictionary = {}   # int_key → {fl, pa, st, na, wa, walkable, marker}
 
+# Hashes de colores con terrain connect (precalculados en _build_palette)
+var _hk_grass:  int
+var _hk_forest: int
+var _hk_water:  int
+var _hk_dark:   int
+
 
 func _run() -> void:
 	print("[BakeChunks] Iniciando…  MAP_PATH=", MAP_PATH)
@@ -92,6 +100,11 @@ func _run() -> void:
 	var ts_na := _get_or_create_nature_ts()
 	var ts_wa := load(TS_CAVE_WL) as TileSet
 	var ts_bu := load(TS_BUILDING) as TileSet
+	var ts_terrain: TileSet = null
+	if FileAccess.file_exists(ProjectSettings.globalize_path(TS_TERRAIN)):
+		ts_terrain = load(TS_TERRAIN)
+	else:
+		push_warning("[BakeChunks] world_terrain_tileset.tres no existe. Ejecutar setup_tilesets.gd primero.")
 
 	DirAccess.make_dir_recursive_absolute(
 		ProjectSettings.globalize_path(CHUNK_DIR))
@@ -102,7 +115,7 @@ func _run() -> void:
 
 	for cy: int in ncy:
 		for cx: int in ncx:
-			_bake_chunk(cx, cy, ts_fl, ts_pa, ts_st, ts_na, ts_wa, ts_bu)
+			_bake_chunk(cx, cy, ts_fl, ts_pa, ts_st, ts_na, ts_wa, ts_bu, ts_terrain)
 			count += 1
 
 	_save_world_data(ncx, ncy)
@@ -115,17 +128,24 @@ func _run() -> void:
 # ─── Paleta ───────────────────────────────────────────────────────────────────
 
 func _build_palette() -> void:
+	# Precalcular hashes de terrenos con terrain connect
+	_hk_grass  = _hk(GRASS)
+	_hk_forest = _hk(FOREST)
+	_hk_water  = _hk(WATER)
+	_hk_dark   = _hk(DARK_GRASS)
+
 	# Cada entrada: "fl"=floor, "pa"=path, "st"=street, "na"=nature, "wa"=wall
+	# Grass, Forest, Water, Dark_Grass NO tienen "fl": los maneja TerrainLayer
 	_palette = {
-		_hk(GRASS):      {"fl": _FL_GRASS},
-		_hk(FOREST):     {"fl": _FL_GRASS, "na": _NA_BUSH_GRN},
+		_hk(GRASS):      {},                            # → TerrainLayer (set 0, terrain 0)
+		_hk(FOREST):     {"na": _NA_BUSH_GRN},          # → TerrainLayer + arbustos
 		_hk(PINK_GRASS): {"fl": _FL_PINK},
 		_hk(PINK_FOR):   {"fl": _FL_PINK, "na": _NA_BUSH_PINK},
 		_hk(SNOW):       {"fl": _FL_SNOW},
 		_hk(ROCK):       {"fl": _FL_SNOW, "na": _NA_ROCK},
 		_hk(SAND):       {"fl": _FL_SAND},
-		_hk(DARK_GRASS): {"fl": _FL_DARK},
-		_hk(WATER):      {"wa": _WA_WALL},
+		_hk(DARK_GRASS): {},                            # → TerrainLayer (set 1, terrain 1)
+		_hk(WATER):      {"wa": _WA_WALL},              # → TerrainLayer visual + wall colisión
 		_hk(DIRT_ROAD):  {"fl": _FL_GRASS, "pa": _PA_DIRT},
 		_hk(STONE_ST):   {"fl": _FL_GRASS, "st": _ST_ADO},
 		_hk(WALL):       {"wa": _WA_WALL},
@@ -211,7 +231,8 @@ func _detect_houses_and_markers() -> void:
 
 func _bake_chunk(cx: int, cy: int,
 		ts_fl: TileSet, ts_pa: TileSet, ts_st: TileSet,
-		ts_na: TileSet, ts_wa: TileSet, ts_bu: TileSet) -> void:
+		ts_na: TileSet, ts_wa: TileSet, ts_bu: TileSet,
+		ts_terrain: TileSet) -> void:
 
 	var start := Vector2i(cx * CHUNK_SIZE, cy * CHUNK_SIZE)
 	var end   := Vector2i(mini(start.x + CHUNK_SIZE, _W), mini(start.y + CHUNK_SIZE, _H))
@@ -223,6 +244,12 @@ func _bake_chunk(cx: int, cy: int,
 	root.set("chunk_x", cx)
 	root.set("chunk_y", cy)
 
+	# TerrainLayer va primero (más abajo en el stack)
+	var ter: TileMapLayer = null
+	if ts_terrain != null:
+		ter = _make_layer(root, "TerrainLayer", ts_terrain)
+		ter.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
 	var fl := _make_layer(root, "FloorLayer",    ts_fl)
 	var pa := _make_layer(root, "PathLayer",     ts_pa)
 	var st := _make_layer(root, "StreetLayer",   ts_st)
@@ -230,14 +257,27 @@ func _bake_chunk(cx: int, cy: int,
 	var wa := _make_layer(root, "WallLayer",     ts_wa)
 	var bu := _make_layer(root, "BuildingLayer", ts_bu, true)
 
+	# Colecciones para terrain connect
+	var tc0a: Array[Vector2i] = []  # pasto   (set 0, terrain 0)
+	var tc0b: Array[Vector2i] = []  # bosque  (set 0, terrain 1)
+	var tc1a: Array[Vector2i] = []  # agua    (set 1, terrain 0)
+	var tc1b: Array[Vector2i] = []  # pantano (set 1, terrain 1)
+
 	var has_stone := false
 
 	for py: int in range(start.y, end.y):
 		for px: int in range(start.x, end.x):
 			var lp  := Vector2i(px - start.x, py - start.y)
 			var key := _pk(px, py)
-			var info: Dictionary = _palette.get(key, {})
 
+			# Terrain connect
+			if ts_terrain != null:
+				if   key == _hk_grass:  tc0a.append(lp)
+				elif key == _hk_forest: tc0b.append(lp)
+				elif key == _hk_water:  tc1a.append(lp)
+				elif key == _hk_dark:   tc1b.append(lp)
+
+			var info: Dictionary = _palette.get(key, {})
 			if info.is_empty(): continue
 			if info.has("fl"): fl.set_cell(lp, 0, info["fl"])
 			if info.has("pa"): pa.set_cell(lp, 0, info["pa"])
@@ -246,6 +286,13 @@ func _bake_chunk(cx: int, cy: int,
 				has_stone = true
 			if info.has("na"): na.set_cell(lp, 0, info["na"])
 			if info.has("wa"): wa.set_cell(lp, 0, info["wa"])
+
+	# Aplicar terrain connect (grass→forest y water→swamp con transiciones automáticas)
+	if ter != null:
+		if not tc0a.is_empty(): ter.set_cells_terrain_connect(tc0a, 0, 0)
+		if not tc0b.is_empty(): ter.set_cells_terrain_connect(tc0b, 0, 1)
+		if not tc1a.is_empty(): ter.set_cells_terrain_connect(tc1a, 1, 0)
+		if not tc1b.is_empty(): ter.set_cells_terrain_connect(tc1b, 1, 1)
 
 	# Casas que se solapan con este chunk
 	for i: int in _houses.size():

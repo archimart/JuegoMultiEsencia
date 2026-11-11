@@ -1,0 +1,125 @@
+{
+  "group_id": "03122db8-dbc8-448e-9219-a4dce9b7b776",
+  "states": [
+    {
+      "character": {
+        "id": "2ce66216-f30b-4fd1-a386-e61507b87425",
+        "name": "A fantasy female dar",
+        "prompt": "A fantasy female HUMAN adventurer, clearly human. Long brown hair tied in a ponytail, friendly face, slim athletic build. Blue tunic over a light leather vest, brown belt and boots, small short sword at the hip. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-06T03:35:07.479669+00:00"
+      },
+      "folder": "A_fantasy_female_dar",
+      "frames": {
+        "rotations": {
+          "south": "A_fantasy_female_dar/rotations/south.png",
+          "south-east": "A_fantasy_female_dar/rotations/south-east.png",
+          "east": "A_fantasy_female_dar/rotations/east.png",
+          "north-east": "A_fantasy_female_dar/rotations/north-east.png",
+          "north": "A_fantasy_female_dar/rotations/north.png",
+          "north-west": "A_fantasy_female_dar/rotations/north-west.png",
+          "west": "A_fantasy_female_dar/rotations/west.png",
+          "south-west": "A_fantasy_female_dar/rotations/south-west.png"
+        },
+        "animations": {
+          "walking": {
+            "east": [
+              "A_fantasy_female_dar/animations/walking/east/frame_000.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_001.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_002.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_003.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_004.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_005.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_006.png",
+              "A_fantasy_female_dar/animations/walking/east/frame_007.png"
+            ],
+            "south": [
+              "A_fantasy_female_dar/animations/walking/south/frame_000.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_001.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_002.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_003.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_004.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_005.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_006.png",
+              "A_fantasy_female_dar/animations/walking/south/frame_007.png"
+            ],
+            "west": [
+              "A_fantasy_female_dar/animations/walking/west/frame_000.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_001.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_002.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_003.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_004.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_005.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_006.png",
+              "A_fantasy_female_dar/animations/walking/west/frame_007.png"
+            ],
+            "north": [
+              "A_fantasy_female_dar/animations/walking/north/frame_000.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_001.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_002.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_003.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_004.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_005.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_006.png",
+              "A_fantasy_female_dar/animations/walking/north/frame_007.png"
+            ]
+          },
+          "seated_riding_posture_in_a_mounting_position_hands": {
+            "west": [
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_000.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_001.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_002.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_003.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_004.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_005.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_006.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_007.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/west/frame_008.png"
+            ],
+            "north": [
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_000.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_001.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_002.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_003.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_004.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_005.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_006.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_007.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/north/frame_008.png"
+            ],
+            "south": [
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_000.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_001.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_002.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_003.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_004.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_005.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_006.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_007.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/south/frame_008.png"
+            ],
+            "east": [
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_000.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_001.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_002.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_003.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_004.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_005.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_006.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_007.png",
+              "A_fantasy_female_dar/animations/seated_riding_posture_in_a_mounting_position_hands/east/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-07T05:37:14.837756"
+}

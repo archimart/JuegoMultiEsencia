@@ -1,16 +1,20 @@
 [gd_resource type="Resource" script_class="RaceData" load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://c4g2yh0qq15h1" path="res://scripts/race_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/race_data.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/companion_shadow.tres" id="2"]
 
 [resource]
 script = ExtResource("1")
 race_name = "No-muerto"
 description = "Daño sostenido. Su familiar drena vida."
-walk_tex_path = "res://assets/Actor/Character/Skeleton/SeparateAnim/Walk.png"
-idle_tex_path = "res://assets/Actor/Character/Skeleton/SeparateAnim/Idle.png"
+sprite_dir_path_m = "res://assets/caracter/A_fantasy_male_UNDEAD_sk-Idle"
+sprite_dir_path_f = "res://assets/caracter/A_fantasy_female_UNDEAD-Idle"
 max_hp = 25
 speed = 75.0
 damage_multiplier = 1.3
 companion_data = ExtResource("2")
 region = "swamp"
+sprite_variant_dirs_m = ["res://assets/caracter/A_fantasy_male_UNDEAD_sk-A_fantasy_male_UNDEA"]
+sprite_variant_names_m = ["Oscuro"]
+sprite_variant_dirs_f = ["res://assets/caracter/A_fantasy_female_UNDEAD-A_fantasy_female_UND"]
+sprite_variant_names_f = ["Oscuro"]

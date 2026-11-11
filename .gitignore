@@ -1,3 +1,10 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Exportaciones del juego (no van en git, son muy grandes)
+*.exe
+*.pck
+*.zip
+*.x86_64
+build/

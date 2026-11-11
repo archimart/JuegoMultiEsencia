@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal died  # emitida antes de queue_free para que el compañero reciba XP
 
-enum State { WANDER, CHASE, ATTACK, DEAD }
+enum State { WANDER, CHASE, ATTACK, FLEE, DEAD }
 
 const WANDER_SPEED_MUL := 0.45
 const WANDER_CHANGE_T  := 2.0
@@ -44,9 +44,9 @@ func _ready() -> void:
 	_health = data.max_health
 
 	_sprite.centered      = true
-	_sprite.offset        = Vector2(0.0, -8.0)
+	_sprite.offset        = Vector2(0.0, -data.frame_size * 0.5)
 	_sprite.sprite_frames = DirectionAnimator.build_4dir_frames(
-		load(data.sprite_path), 16, 4, ANIM_FPS
+		load(data.sprite_path), data.frame_size, 4, ANIM_FPS
 	)
 	_sprite.play("walk_down")
 
@@ -104,6 +104,7 @@ func _physics_process(delta: float) -> void:
 		State.WANDER: _tick_wander(delta)
 		State.CHASE:  _tick_chase()
 		State.ATTACK: _tick_attack()
+		State.FLEE:   _tick_flee()
 
 	velocity += _knockback
 	move_and_slide()
@@ -112,9 +113,15 @@ func _physics_process(delta: float) -> void:
 
 
 func _tick_wander(delta: float) -> void:
-	if _player != null:
-		if global_position.distance_to(_player.global_position) < data.vision_range:
+	if _player != null and not data.is_static:
+		var dist := global_position.distance_to(_player.global_position)
+		if dist < data.vision_range:
 			_state = State.CHASE
+			return
+	elif _player != null and data.is_static:
+		# Estático: ataca solo si el jugador entra al rango de ataque
+		if global_position.distance_to(_player.global_position) <= data.attack_range:
+			_state = State.ATTACK
 			return
 	_wander_t -= delta
 	if _wander_t <= 0.0:
@@ -154,7 +161,7 @@ func _tick_attack() -> void:
 		if (_taunt_node != null and is_instance_valid(_taunt_node)) else _player
 	var dist := global_position.distance_to(attack_target.global_position)
 	if dist > data.attack_range * 1.4:
-		_state = State.CHASE
+		_state = State.CHASE if not data.is_static else State.WANDER
 		return
 	if _attack_cd <= 0.0:
 		if _cursed_t > 0.0:
@@ -170,6 +177,8 @@ func _tick_attack() -> void:
 				_player.take_hit(data.damage)
 				if _player.has_signal("hurt_by"):
 					_player.hurt_by.emit(self)
+				if data.poisons_on_hit and _player.has_method("apply_poison"):
+					_player.apply_poison(data.poison_dps, data.poison_duration)
 			# Golpear al compañero si está cerca (daño reducido al 50 %)
 			for comp: Node in get_tree().get_nodes_in_group("companion"):
 				if comp is Node2D and comp.has_method("take_hit_companion"):
@@ -185,6 +194,18 @@ func _tick_attack() -> void:
 			_attack_cd = data.attack_cooldown
 
 
+func _tick_flee() -> void:
+	if _player == null:
+		_state = State.WANDER
+		return
+	var dist := global_position.distance_to(_player.global_position)
+	if dist > data.vision_range * 2.0:
+		_state = State.WANDER
+		return
+	var away := (global_position - _player.global_position).normalized()
+	velocity = away * data.speed * _slow_mult
+
+
 func take_damage(amount: int, from_pos: Vector2 = Vector2.ZERO) -> void:
 	if _state == State.DEAD:
 		return
@@ -198,6 +219,10 @@ func take_damage(amount: int, from_pos: Vector2 = Vector2.ZERO) -> void:
 	FX.hit_stop(0.05)
 	FX.damage_number(global_position + Vector2(0.0, -20.0), amount)
 	SFX.play("hit_monster")
+	if data.flees_when_hurt and _state != State.FLEE:
+		var ratio := float(_health) / float(data.max_health)
+		if ratio < data.flee_threshold:
+			_state = State.FLEE
 	if _health <= 0:
 		_die()
 
@@ -251,12 +276,12 @@ func set_taunt(node: Node2D, duration: float) -> void:
 
 func _xp_for_region(region: String) -> int:
 	match region:
-		"pradera":  return 5
-		"bosque":   return 8
-		"montaña":  return 12
-		"desierto": return 12
-		"pantano":  return 15
-	return 5
+		"pradera":  return 15
+		"bosque":   return 25
+		"montaña":  return 35
+		"desierto": return 35
+		"pantano":  return 45
+	return 15
 
 
 func _tick_sprite() -> void:
@@ -267,6 +292,12 @@ func _tick_sprite() -> void:
 		State.CHASE, State.ATTACK:
 			if _player != null:
 				_dir_anim.face_target(global_position, _player.global_position)
+		State.FLEE:
+			if _player != null:
+				# Cara hacia donde huye (opuesto al jugador)
+				var away := global_position - _player.global_position
+				if away.length_squared() > 0.01:
+					_dir_anim.update_velocity(away)
 	var anim := "walk_" + _dir_anim.get_dir()
 	if _sprite.animation != anim:
 		_sprite.play(anim)

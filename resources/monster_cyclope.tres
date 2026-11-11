@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Cíclope"
+max_health = 110
+speed = 38.0
+damage = 18
+vision_range = 100.0
+attack_cooldown = 1.6
+gold_min = 7
+gold_max = 13
+sprite_path = "res://assets/Actor/Monster/Cyclope/SpriteSheet.png"
+essence_id = "cyclope"
+region = "montaña"
+essences_required = 22

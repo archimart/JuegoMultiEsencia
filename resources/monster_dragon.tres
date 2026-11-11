@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MonsterData" format=3]
+
+[ext_resource type="Script" uid="uid://cak162gqxm0hq" path="res://scripts/monster_data.gd" id="1_mdat"]
+
+[resource]
+script = ExtResource("1_mdat")
+monster_name = "Dragón"
+max_health = 150
+speed = 50.0
+damage = 25
+vision_range = 140.0
+attack_cooldown = 1.2
+gold_min = 12
+gold_max = 20
+sprite_path = "res://assets/Actor/Monster/Dragon/SpriteSheet.png"
+essence_id = "dragon"
+region = "pantano"
+essences_required = 30

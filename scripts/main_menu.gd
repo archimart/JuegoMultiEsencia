@@ -4,6 +4,7 @@ const SCENE_RACE_SELECT := "res://scenes/race_select.tscn"
 const SCENE_OPTIONS     := "res://scenes/options_menu.tscn"
 
 @onready var _btn_play:    Button = $Center/VBox/BtnPlay
+@onready var _btn_multi:   Button = $Center/VBox/BtnMulti
 @onready var _btn_options: Button = $Center/VBox/BtnOptions
 @onready var _btn_credits: Button = $Center/VBox/BtnCredits
 @onready var _btn_quit:    Button = $Center/VBox/BtnQuit
@@ -13,6 +14,7 @@ var _credits_overlay: CanvasLayer = null
 
 func _ready() -> void:
 	_btn_play.pressed.connect(_on_play)
+	_btn_multi.pressed.connect(_on_multi)
 	_btn_options.pressed.connect(_on_options)
 	_btn_credits.pressed.connect(_on_credits)
 	_btn_quit.pressed.connect(_on_quit)
@@ -22,6 +24,11 @@ func _ready() -> void:
 func _on_play() -> void:
 	SFX.play("ui_click")
 	get_tree().change_scene_to_file(SCENE_RACE_SELECT)
+
+
+func _on_multi() -> void:
+	SFX.play("ui_click")
+	get_tree().change_scene_to_file("res://scenes/lobby.tscn")
 
 
 func _on_options() -> void:

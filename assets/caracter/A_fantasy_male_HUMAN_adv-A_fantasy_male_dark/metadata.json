@@ -1,0 +1,79 @@
+{
+  "group_id": "d09a3ffc-b75e-469d-81e5-09395dc227fe",
+  "states": [
+    {
+      "character": {
+        "id": "f51a234c-eef4-4876-b01f-c6e14fc9536c",
+        "name": "A fantasy male dark",
+        "prompt": "A fantasy male HUMAN adventurer, clearly human. Short messy brown hair, friendly face, average athletic build. Blue tunic over a light leather vest, brown belt and boots, small short sword at the hip. Cute chibi top-down RPG game sprite, simple pixel art, dark outline, limited colors, flat shading, no anti-aliasing.",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-11-06T03:27:58.205981+00:00"
+      },
+      "folder": "A_fantasy_male_dark",
+      "frames": {
+        "rotations": {
+          "south": "A_fantasy_male_dark/rotations/south.png",
+          "south-east": "A_fantasy_male_dark/rotations/south-east.png",
+          "east": "A_fantasy_male_dark/rotations/east.png",
+          "north-east": "A_fantasy_male_dark/rotations/north-east.png",
+          "north": "A_fantasy_male_dark/rotations/north.png",
+          "north-west": "A_fantasy_male_dark/rotations/north-west.png",
+          "west": "A_fantasy_male_dark/rotations/west.png",
+          "south-west": "A_fantasy_male_dark/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "north": [
+              "A_fantasy_male_dark/animations/Walking/north/frame_000.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_001.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_002.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_003.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_004.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_005.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_006.png",
+              "A_fantasy_male_dark/animations/Walking/north/frame_007.png"
+            ],
+            "west": [
+              "A_fantasy_male_dark/animations/Walking/west/frame_000.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_001.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_002.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_003.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_004.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_005.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_006.png",
+              "A_fantasy_male_dark/animations/Walking/west/frame_007.png"
+            ],
+            "east": [
+              "A_fantasy_male_dark/animations/Walking/east/frame_000.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_001.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_002.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_003.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_004.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_005.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_006.png",
+              "A_fantasy_male_dark/animations/Walking/east/frame_007.png"
+            ],
+            "south": [
+              "A_fantasy_male_dark/animations/Walking/south/frame_000.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_001.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_002.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_003.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_004.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_005.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_006.png",
+              "A_fantasy_male_dark/animations/Walking/south/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-11-06T17:52:20.972356"
+}

@@ -20,14 +20,27 @@ const SHOOT_COOLDOWN     := 0.4
 const INVULNERABILITY_T  := 1.5
 var respawn_pos: Vector2 = Vector2(1584.0, 1584.0)
 
-const XP_PER_LEVEL: Array[int] = [50, 120, 250, 450, 700, 1000, 1400, 1900, 2500]
+const XP_PER_LEVEL: Array[int] = [
+	# Rápido (Nv 1-9)
+	50, 120, 250, 450, 700, 1000, 1400, 1900, 2500,
+	# Moderado (Nv 10-19)
+	3000, 3300, 3600, 4000, 4300, 4700, 5100, 5500, 6000, 6500,
+	# Desafiante (Nv 20-29)
+	7000, 7500, 8000, 8500, 9000, 9500, 9800, 10000, 10000, 10000,
+	# Difícil (Nv 30-39)
+	10200, 10400, 10600, 10800, 11000, 11200, 11400, 11600, 11800, 12000,
+	# Élite (Nv 40-45)
+	12200, 12400, 12600, 12800, 13000,
+]
 
 # ── Puñetazo sin arma ────────────────────────────────────────────────────────
-const FIST_DAMAGE:    int   = 4
-const FIST_RANGE:     float = 22.0
-const FIST_COOLDOWN:  float = 0.30
-const FIST_KNOCKBACK: float = 35.0
-const FIST_ARC:       float = 90.0
+const FIST_DAMAGE:       int   = 4
+const FIST_RANGE:        float = 26.0
+const FIST_COOLDOWN:     float = 0.30
+const FIST_KNOCKBACK:    float = 35.0
+const FIST_ARC:          float = 120.0
+const MELEE_Y_OFFSET:    float = 8.0   # centro visual: ~8 px sobre los pies
+const MONSTER_HIT_RADIUS: float = 9.0  # radio del cuerpo del monstruo para colisión
 
 # ── Habilidades del Guerrero ──────────────────────────────────────────────────
 const SKILL_SPIN_CD:      float = 8.0
@@ -49,7 +62,9 @@ const SKILL_FIREBALL_LEVEL:    int   = 1
 const SKILL_MAGIC_SHIELD_LEVEL: int  = 3
 const SKILL_ICE_RAY_LEVEL:     int   = 5
 const FIREBALL_SPLASH:         float = 55.0
+const BASE_MAX_MANA:           int   = 40
 const MAGE_MAX_MANA:           int   = 100
+const MANA_PER_LEVEL:          int   = 2
 const MANA_REGEN:              float = 8.0
 
 var max_hp: int   = 30     # público para que hud.gd lo lea
@@ -84,6 +99,11 @@ var _magic_shield_active: bool  = false
 var _magic_shield_t:     float = 0.0
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var _camera: Camera2D = $Camera2D
+
+const ZOOM_MIN  := 0.5
+const ZOOM_MAX  := 4.0
+const ZOOM_STEP := 0.1
 
 var last_dir:        Vector2    = Vector2.DOWN
 var _shoot_cooldown: float      = 0.0
@@ -98,6 +118,16 @@ var _arrow_scene:      PackedScene = preload("res://scenes/arrow.tscn")
 var _magic_bolt_scene: PackedScene = preload("res://scenes/magic_bolt.tscn")
 var _bag_scene:        PackedScene = preload("res://scenes/loot_bag.tscn")
 var _dir_anim    := DirectionAnimator.new()
+
+var _mount:   Node2D = null
+var _mounted: bool   = false
+
+var _poison_dps: float = 0.0
+var _poison_t:   float = 0.0
+var _poison_acc: float = 0.0
+
+const NET_SYNC_INTERVAL := 1.0 / 15.0   # 15 veces por segundo
+var _net_sync_accumulator: float = 0.0
 
 
 func setup_race(race: RaceData) -> void:
@@ -134,6 +164,8 @@ func setup_class(cd: Resource) -> void:
 	hp           = mini(hp, max_hp)
 	_speed       = _base_speed * float(cd.get("speed_mult"))
 	_damage_mult = float(cd.get("damage_mult"))
+	max_mana = BASE_MAX_MANA + MANA_PER_LEVEL * (level - 1)
+	mana     = max_mana
 	var wid: String = str(cd.get("weapon_id"))
 	match wid:
 		"bow":
@@ -145,9 +177,9 @@ func setup_class(cd: Resource) -> void:
 		"staff":
 			inventory["staff"] = 1
 			_auto_equip("staff")
-			max_mana = MAGE_MAX_MANA
-			mana     = MAGE_MAX_MANA
-			mana_changed.emit(mana, max_mana)
+			max_mana = MAGE_MAX_MANA + MANA_PER_LEVEL * (level - 1)
+			mana     = max_mana
+	mana_changed.emit(mana, max_mana)
 	inventory_changed.emit()
 	health_changed.emit()
 	class_changed.emit(cd)
@@ -203,12 +235,22 @@ func _get_xp_to_next() -> int:
 
 func _on_level_up() -> void:
 	level_changed.emit(level)
-	notice_requested.emit("¡Subiste al nivel %d!" % level)
-	FX.camera_shake(3.0, 0.2)
+	notice_requested.emit("★ ¡NIVEL %d! ★" % level)
+	FX.camera_shake(6.0, 0.4)
+	FX.particles(global_position, "level_up")
 	SFX.play("coin")
-	_sprite.self_modulate = Color(3.0, 2.5, 0.5)
+	# Aumentar maná máximo con cada nivel
+	if max_mana > 0:
+		max_mana += MANA_PER_LEVEL
+		mana = mini(mana + MANA_PER_LEVEL, max_mana)
+		mana_changed.emit(mana, max_mana)
+	# Flash dorado intenso + pulso de escala
+	_sprite.self_modulate = Color(4.0, 3.5, 0.5)
 	var tw := create_tween()
-	tw.tween_property(_sprite, "self_modulate", _race_modulate, 0.7)
+	tw.set_parallel(true)
+	tw.tween_property(_sprite, "self_modulate", _race_modulate, 0.9)
+	tw.tween_property(_sprite, "scale", Vector2(1.6, 1.6), 0.12)
+	tw.chain().tween_property(_sprite, "scale", Vector2.ONE, 0.25)
 
 
 func _ready() -> void:
@@ -226,6 +268,25 @@ func _physics_process(delta: float) -> void:
 		if _skill_cds[i] > 0.0:
 			_skill_cds[i] = maxf(0.0, _skill_cds[i] - delta)
 			skill_cooldown_changed.emit(i, _skill_cds[i], _skill_max_cd(i))
+
+	# Veneno del jugador
+	if _poison_t > 0.0:
+		_poison_t -= delta
+		_poison_acc += _poison_dps * delta
+		if _poison_acc >= 1.0:
+			var pdmg := int(_poison_acc)
+			_poison_acc -= float(pdmg)
+			hp = maxi(0, hp - pdmg)
+			health_changed.emit()
+			FX.damage_number(global_position + Vector2(0.0, -24.0), pdmg, Color(0.3, 0.9, 0.3))
+			if hp <= 0:
+				_respawn()
+				return
+		_sprite.self_modulate = _race_modulate * Color(0.6, 1.4, 0.6)
+	else:
+		_poison_acc = 0.0
+		if _poison_t < 0.0:
+			_poison_t = 0.0
 
 	# Regenerar maná
 	if max_mana > 0 and mana < max_mana:
@@ -267,13 +328,22 @@ func _physics_process(delta: float) -> void:
 		_update_anim(false)
 		return
 
+	# Ataque con clic izquierdo — funciona incluso sobre elementos de UI como el minimapa
+	if Input.is_action_just_pressed("shoot"):
+		_handle_shoot()
+
 	var input := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
 		Input.get_axis("ui_up", "ui_down")
 	)
+	var move_speed: float = _mount.get_speed() if _mounted and _mount != null else _speed
 	var speed_factor := 0.5 if _blocking else 1.0
-	velocity = input.normalized() * _speed * speed_factor if input != Vector2.ZERO else Vector2.ZERO
+	velocity = input.normalized() * move_speed * speed_factor if input != Vector2.ZERO else Vector2.ZERO
 	move_and_slide()
+
+	if _mounted and _mount != null:
+		_mount.global_position = global_position
+		_mount.update_anim(velocity, _dir_anim.get_dir())
 
 	if input != Vector2.ZERO:
 		last_dir = input.normalized()
@@ -290,8 +360,33 @@ func _physics_process(delta: float) -> void:
 
 	_update_anim(input != Vector2.ZERO)
 
+	if multiplayer.has_multiplayer_peer():
+		_net_sync_accumulator += delta
+		if _net_sync_accumulator >= NET_SYNC_INTERVAL:
+			_net_sync_accumulator = 0.0
+			_send_net_state()
+
+
+func _send_net_state() -> void:
+	var w := get_parent()
+	if w != null and w.has_method("_net_send_player_state"):
+		w._net_send_player_state(global_position, _sprite.animation, _sprite.flip_h)
+
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed \
+			and Input.is_key_pressed(KEY_CTRL):
+		var z := _camera.zoom.x
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			z = minf(z + ZOOM_STEP, ZOOM_MAX)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			z = maxf(z - ZOOM_STEP, ZOOM_MIN)
+		else:
+			z = z
+		_camera.zoom = Vector2(z, z)
+		get_viewport().set_input_as_handled()
+		return
+
 	if input_blocked:
 		return
 
@@ -342,14 +437,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			_skill_ice_ray()
 			return
 
-	if not event.is_action_pressed("shoot"):
-		return
+	# El ataque con clic izquierdo se maneja en _physics_process via _handle_shoot()
 
+
+func _handle_shoot() -> void:
 	# Mago: bolt mágico
 	if _is_mage():
 		_attack_magic()
 		return
-
 	# Arquero: disparar flechas
 	if _class_data != null and str(_class_data.get("weapon_id")) == "bow":
 		if inventory.get("bow", 0) <= 0:
@@ -361,7 +456,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		_shoot()
 		return
-
 	# Sin clase o Guerrero: cuerpo a cuerpo
 	_attack_melee()
 
@@ -439,6 +533,11 @@ func apply_shield() -> void:
 	FX.particles(global_position, "shield")
 
 
+func apply_poison(dps: float, duration: float) -> void:
+	_poison_dps = maxf(_poison_dps, dps)
+	_poison_t   = maxf(_poison_t, duration)
+
+
 func take_hit(damage: int) -> void:
 	if _inv_t > 0.0:
 		return
@@ -500,13 +599,32 @@ func do_respawn() -> void:
 	notice_requested.emit("Renaciste  —  tu bolsa está en el punto de caída")
 
 
+# Offset del jinete según dirección: detrás de la cabeza del jabalí
+const _MOUNT_OFFSETS: Dictionary = {
+	"down":  Vector2( 2.0,  7.0),
+	"right": Vector2(-4.0,  8.0),
+	"up":    Vector2(-2.0,  8.0),
+	"left":  Vector2( 4.0,  8.0),
+}
+
 func _update_anim(moving: bool) -> void:
-	var prefix := "walk_" if moving else "idle_"
+	var prefix: String
+	if _mounted and moving and _sprite.sprite_frames != null \
+			and _sprite.sprite_frames.has_animation("ride_down"):
+		prefix = "ride_"
+	else:
+		prefix = "walk_" if moving else "idle_"
 	if moving:
 		_dir_anim.update_velocity(last_dir * _speed)
-	var anim := prefix + _dir_anim.get_dir()
+	var dir := _dir_anim.get_dir()
+	var anim := prefix + dir
 	if _sprite.animation != anim:
 		_sprite.play(anim)
+	if _mounted:
+		var off: Vector2 = _MOUNT_OFFSETS.get(dir, Vector2.ZERO)
+		_sprite.position = Vector2(off.x, -13.0 + off.y)
+		# Al ir hacia abajo el jabalí queda al frente; el jugador va detrás
+		z_index = 0 if dir == "down" else 1
 
 
 func _build_frames() -> void:
@@ -529,19 +647,25 @@ func _build_directional_frames() -> void:
 	for dir: String in ["down", "up", "left", "right"]:
 		var dname: String = dir_map[dir]
 
-		# Walk: usa la variante si tiene sus propios frames, si no el original
+		# Walk: busca frames animados; si no existen, usa la rotación estática
 		var walk_anim := "walk_" + dir
 		frames.add_animation(walk_anim)
-		frames.set_animation_speed(walk_anim, 8.0)
 		frames.set_animation_loop(walk_anim, true)
 		var walk_sub := _find_walk_sub(idle_base, dname) if idle_base != walk_base else ""
-		for i: int in 8:
-			var path: String
-			if not walk_sub.is_empty():
-				path = walk_sub + "/frame_%03d.png" % i
-			else:
-				path = walk_base + "/Idle/animations/Walking/" + dname + "/frame_%03d.png" % i
-			frames.add_frame(walk_anim, load(path))
+		if walk_sub.is_empty():
+			walk_sub = _find_walk_sub(walk_base, dname)
+		if not walk_sub.is_empty():
+			frames.set_animation_speed(walk_anim, 8.0)
+			for i: int in 8:
+				frames.add_frame(walk_anim, load(walk_sub + "/frame_%03d.png" % i))
+		else:
+			# Sin animación de caminar: frame estático orientado a la dirección
+			frames.set_animation_speed(walk_anim, 1.0)
+			var rot_path := _find_idle_frame_path(idle_base, dname)
+			if rot_path.is_empty():
+				rot_path = _find_idle_frame_path(walk_base, dname)
+			if not rot_path.is_empty():
+				frames.add_frame(walk_anim, load(rot_path))
 
 		# Idle: busca primero en la variante, después en el original
 		var idle_anim := "idle_" + dir
@@ -553,12 +677,33 @@ func _build_directional_frames() -> void:
 			idle_path = _find_idle_frame_path(walk_base, dname)
 		frames.add_frame(idle_anim, load(idle_path))
 
+	# Animación de montar (opcional, solo si existe la carpeta)
+	for dir: String in ["down", "up", "left", "right"]:
+		var dname: String = dir_map[dir]
+		var ride_sub := _find_ride_sub(walk_base, dname)
+		if ride_sub.is_empty() and idle_base != walk_base:
+			ride_sub = _find_ride_sub(idle_base, dname)
+		if not ride_sub.is_empty():
+			var ride_anim := "ride_" + dir
+			frames.add_animation(ride_anim)
+			frames.set_animation_loop(ride_anim, true)
+			frames.set_animation_speed(ride_anim, 8.0)
+			var i := 0
+			while ResourceLoader.exists(ride_sub + "/frame_%03d.png" % i):
+				frames.add_frame(ride_anim, load(ride_sub + "/frame_%03d.png" % i))
+				i += 1
+
 	_sprite.sprite_frames = frames
 	_sprite.position = Vector2(0.0, -13.0)
 	_sprite.play("idle_down")
 
 
 func _find_idle_frame_path(base: String, dname: String) -> String:
+	# Estructura plana: rotations/ directamente en base (variantes ORC/DWARF dark)
+	var direct := base + "/rotations/" + dname + ".png"
+	if ResourceLoader.exists(direct):
+		return direct
+	# Estructura anidada: {base}/{sub}/rotations/ (Human, Elf)
 	var dir := DirAccess.open(base)
 	if dir:
 		dir.list_dir_begin()
@@ -572,15 +717,37 @@ func _find_idle_frame_path(base: String, dname: String) -> String:
 	return ""
 
 
-func _find_walk_sub(base: String, dname: String) -> String:
-	# Devuelve la ruta completa al directorio de frames para 'dname', o "" si no existe.
+func _find_ride_sub(base: String, dname: String) -> String:
+	const RIDE_FOLDER := "/animations/seated_riding_posture_in_a_mounting_position_hands/"
+	var direct := base + RIDE_FOLDER + dname
+	if DirAccess.dir_exists_absolute(direct):
+		return direct
 	var dir := DirAccess.open(base)
 	if dir:
 		dir.list_dir_begin()
 		var sub := dir.get_next()
 		while not sub.is_empty():
 			if dir.current_is_dir() and not sub.begins_with("."):
-				# Acepta tanto "walking" como "Walking"
+				var p := base + "/" + sub + RIDE_FOLDER + dname
+				if DirAccess.dir_exists_absolute(p):
+					return p
+			sub = dir.get_next()
+	return ""
+
+
+func _find_walk_sub(base: String, dname: String) -> String:
+	# Estructura plana: animations/walking/ directamente en base (variantes ORC/DWARF dark)
+	for suffix: String in ["/animations/walking/", "/animations/Walking/"]:
+		var p := base + suffix + dname
+		if DirAccess.dir_exists_absolute(p):
+			return p
+	# Estructura anidada: {base}/{sub}/animations/Walking/ (Human, Elf)
+	var dir := DirAccess.open(base)
+	if dir:
+		dir.list_dir_begin()
+		var sub := dir.get_next()
+		while not sub.is_empty():
+			if dir.current_is_dir() and not sub.begins_with("."):
 				for suffix: String in ["/animations/walking/", "/animations/Walking/"]:
 					var p := base + "/" + sub + suffix + dname
 					if DirAccess.dir_exists_absolute(p):
@@ -629,7 +796,7 @@ func _attack_melee() -> void:
 	if _melee_cd > 0.0 or _charging:
 		return
 	var mouse_dir := get_global_mouse_position() - global_position
-	if mouse_dir.length() > 0.1:
+	if mouse_dir.length() > 12.0:
 		last_dir = mouse_dir.normalized()
 	if equipped_weapon != null:
 		_do_melee(
@@ -647,14 +814,19 @@ func _attack_melee() -> void:
 
 func _do_melee(dmg: int, range_px: float, arc_deg: float, _kb: float, fx_type: String) -> void:
 	var hit_any := false
+	var origin := global_position + Vector2(0.0, -MELEE_Y_OFFSET)
 	for m: Node in get_tree().get_nodes_in_group("monster"):
 		if not is_instance_valid(m) or not m is Node2D:
 			continue
-		var diff: Vector2 = (m as Node2D).global_position - global_position
+		var target := (m as Node2D).global_position + Vector2(0.0, -MELEE_Y_OFFSET)
+		var diff: Vector2 = target - origin
 		var dist := diff.length()
-		if dist > range_px or dist < 0.5:
+		# El golpe alcanza si el borde del arco toca el borde del cuerpo del monstruo.
+		if dist > range_px + MONSTER_HIT_RADIUS:
 			continue
-		if arc_deg < 360.0:
+		# El chequeo de arco sólo aplica cuando el monstruo no está encima del jugador;
+		# si ya están encimados, golpea sin importar la dirección.
+		if arc_deg < 360.0 and dist > MONSTER_HIT_RADIUS:
 			var ang := absf(last_dir.angle_to(diff.normalized()))
 			if ang > deg_to_rad(arc_deg * 0.5):
 				continue
@@ -739,7 +911,7 @@ func _skill_charge() -> void:
 		notice_requested.emit("Necesitas espada para Carga")
 		return
 	_charge_dir = get_global_mouse_position() - global_position
-	if _charge_dir.length() > 0.1:
+	if _charge_dir.length() > 12.0:
 		_charge_dir = _charge_dir.normalized()
 	else:
 		_charge_dir = last_dir
@@ -818,7 +990,7 @@ func _spawn_magic_bolt(dmg: int, spd: float, rng: float, col: Color,
 					   impact: String = "", is_piercing: bool = false,
 					   slow_dur: float = 0.0) -> void:
 	var dir := (get_global_mouse_position() - global_position)
-	if dir.length() > 0.1:
+	if dir.length() > 12.0:
 		dir = dir.normalized()
 	else:
 		dir = last_dir
@@ -905,3 +1077,17 @@ func _skill_ice_ray() -> void:
 					  0.0, "ice_trail", "ice_hit", true, 3.0)
 	_skill_cds[2] = SKILL_ICE_RAY_CD
 	skill_cooldown_changed.emit(2, SKILL_ICE_RAY_CD, SKILL_ICE_RAY_CD)
+
+
+# ── Monturas ──────────────────────────────────────────────────────────────────
+
+func mount_start(mount_node: Node2D) -> void:
+	_mount   = mount_node
+	_mounted = true
+
+
+func mount_end() -> void:
+	_mounted = false
+	_mount   = null
+	z_index  = 0
+	_sprite.position = Vector2(0.0, -13.0)

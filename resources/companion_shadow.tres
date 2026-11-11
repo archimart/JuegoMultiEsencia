@@ -10,6 +10,7 @@ sprite_walk_tex = "res://assets/Actor/Monster/Spirit/SpriteSheet.png"
 sprite_tile_size = 16
 sprite_walk_frames = 4
 sprite_fps = 6.0
+ability_scene_path = "res://scenes/abilities/shadow_ability.tscn"
 damage_per_level = [3, 5, 8, 11, 15]
 cooldown_per_level = [2.0, 1.8, 1.5, 1.2, 1.0]
 xp_to_next = [5, 15, 30, 60, 0]

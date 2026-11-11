@@ -77,6 +77,10 @@ var _spawner_scene:   PackedScene = preload("res://scenes/spawner.tscn")
 var _safe_zone_scene: PackedScene = preload("res://scenes/safe_zone.tscn")
 var _city_npc_scene:  PackedScene = preload("res://scenes/city_npc.tscn")
 var _ore_node_scene:  PackedScene = preload("res://scenes/ore_node.tscn")
+var _mount_scene:     PackedScene = preload("res://scenes/mount.tscn")
+
+var _remote_player_scene: PackedScene = preload("res://scenes/player_remote.tscn")
+var _remote_players: Dictionary = {}   # peer_id → Node2D (PlayerRemote)
 
 var _chunk_world:   bool         = false
 var _surface_cm:    ChunkManager = null
@@ -98,13 +102,15 @@ var _mm_markers:  Array       = []  # [{dot: ColorRect, pos: Vector2, comp: bool
 
 
 func _ready() -> void:
-	_chunk_world = FileAccess.file_exists(
-		ProjectSettings.globalize_path("res://scenes/chunks/chunk_0_0_0.tscn"))
+	_chunk_world = ResourceLoader.exists("res://scenes/chunks/chunk_0_0_0.tscn")
 	if not has_node("/root/FX") or not has_node("/root/SFX"):
 		push_error("[World] Autoloads FX/SFX no encontrados. Recarga el proyecto.")
 	_register_input_actions()
 	if not _chunk_world:
-		_show_no_chunks_error()
+		if not Network.is_dedicated:
+			_show_no_chunks_error()
+		else:
+			push_error("[World] chunk_0_0_0.tscn no existe. Ejecutar bake_chunks.gd primero.")
 		return
 	_build_cave_zone()
 	_spawn_chunk_world_objects()
@@ -112,6 +118,23 @@ func _ready() -> void:
 	_spawn_spawner()
 	_spawn_cave_ores()
 	_spawn_surface_ores()
+
+	if Network.is_dedicated:
+		# Servidor dedicado: desactivar jugador local, sin HUD ni minimapa
+		_player.set_physics_process(false)
+		_player.set_process(false)
+		_player.set_process_input(false)
+		_player.visible = false
+		_init_chunk_managers()
+		_setup_multiplayer_players()
+		print("[World] Servidor dedicado listo.")
+		return
+
+	# Auto-host: arranca el servidor al entrar al mundo para que otros puedan unirse
+	if not multiplayer.has_multiplayer_peer():
+		Network.host()
+		Network.game_in_progress = true
+
 	var race = GameState.selected_race
 	if race != null:
 		_player.setup_race(race)
@@ -121,6 +144,8 @@ func _ready() -> void:
 		_player.setup_class(cls)
 	_init_chunk_managers()
 	_setup_minimap()
+	if multiplayer.has_multiplayer_peer():
+		_setup_multiplayer_players()
 
 
 func _show_no_chunks_error() -> void:
@@ -150,8 +175,8 @@ func _init_chunk_managers() -> void:
 		cam.limit_top    = 0
 		cam.limit_bottom = world_px.y
 
-	# Centro del pueblo (marcador amarillo del mapa, tile 99,99)
-	const VILLAGE_CENTER := Vector2(1584.0, 1584.0)
+	# Centro del pueblo (marcador amarillo del mapa, tile 199,199 en mapa 400×400)
+	const VILLAGE_CENTER := Vector2(3200.0, 3200.0)
 	var spawn := _chunk_read_spawn()
 	if spawn == Vector2.ZERO:
 		spawn = VILLAGE_CENTER
@@ -164,8 +189,7 @@ func _init_chunk_managers() -> void:
 	_surface_cm.world_offset = Vector2.ZERO
 	add_child(_surface_cm)
 
-	var cave_path := ProjectSettings.globalize_path("res://scenes/chunks/chunk_1_0_0.tscn")
-	if FileAccess.file_exists(cave_path):
+	if ResourceLoader.exists("res://scenes/chunks/chunk_1_0_0.tscn"):
 		_cave_cm = preload("res://scripts/chunk_manager.gd").new()
 		_cave_cm.name         = "CaveChunkManager"
 		_cave_cm.layer        = 1
@@ -181,7 +205,7 @@ func _init_chunk_managers() -> void:
 
 func _chunk_read_spawn() -> Vector2:
 	const PATH := "res://resources/world_data.json"
-	if not FileAccess.file_exists(ProjectSettings.globalize_path(PATH)):
+	if not FileAccess.file_exists(PATH):
 		return Vector2.ZERO
 	var f := FileAccess.open(PATH, FileAccess.READ)
 	if f == null:
@@ -199,7 +223,7 @@ func _chunk_read_spawn() -> Vector2:
 
 func _chunk_world_px() -> Vector2i:
 	const PATH := "res://resources/world_data.json"
-	if not FileAccess.file_exists(ProjectSettings.globalize_path(PATH)):
+	if not FileAccess.file_exists(PATH):
 		return Vector2i(3200, 3200)
 	var f := FileAccess.open(PATH, FileAccess.READ)
 	if f == null:
@@ -316,16 +340,16 @@ func _register_input_actions() -> void:
 func _spawn_chunk_world_objects() -> void:
 	# Zona segura centrada en el pueblo (tile 99,99 = pixel 1584,1584)
 	var zone: Node2D = _safe_zone_scene.instantiate()
-	zone.position = Vector2(1584.0, 1584.0)
+	zone.position = Vector2(3200.0, 3200.0)
 	add_child(zone)
 
 	# Mesa de crafteo y cofre al sur del centro (tile 96,103 y 98,103)
 	var table: Node2D = _table_scene.instantiate()
-	table.position = Vector2(1536.0, 1648.0)
+	table.position = Vector2(3152.0, 3264.0)
 	add_child(table)
 
 	var chest: Node2D = _chest_scene.instantiate()
-	chest.position = Vector2(1568.0, 1648.0)
+	chest.position = Vector2(3184.0, 3264.0)
 	add_child(chest)
 
 	# NPCs a ambos lados del centro (tiles 94,100 y 104,100)
@@ -333,29 +357,35 @@ func _spawn_chunk_world_objects() -> void:
 	merchant.npc_name     = "Comerciante"
 	merchant.atlas_region = Rect2(0, 96, 16, 16)
 	merchant.shop_scene   = "res://scenes/shop_menu.tscn"
-	merchant.position     = Vector2(1504.0, 1600.0)
+	merchant.position     = Vector2(3120.0, 3216.0)
 	add_child(merchant)
 
 	var sage: CityNPC = _city_npc_scene.instantiate()
 	sage.npc_name     = "Sabio"
 	sage.atlas_region = Rect2(0, 112, 16, 16)
-	sage.position     = Vector2(1664.0, 1600.0)
+	sage.position     = Vector2(3280.0, 3216.0)
 	add_child(sage)
 
 	# Establo de compañeros (tile 100,105 = pixel 1600,1680)
 	var stable: CityNPC = _city_npc_scene.instantiate()
 	stable.npc_name     = "Establo — [C] compañeros"
 	stable.atlas_region = Rect2(0, 128, 16, 16)
-	stable.position     = Vector2(1600.0, 1680.0)
+	stable.position     = Vector2(3216.0, 3296.0)
 	add_child(stable)
 
 	# Entrenador de clase (tile 101,100 = pixel 1616,1600)
 	var trainer: CityNPC = _city_npc_scene.instantiate()
 	trainer.npc_name     = "Entrenador — [E]"
 	trainer.atlas_region = Rect2(16, 128, 16, 16)
-	trainer.position     = Vector2(1616.0, 1600.0)
+	trainer.position     = Vector2(3232.0, 3216.0)
 	add_child(trainer)
 	_trainer = trainer
+
+	# Jabalí blindado junto al establo (tile 100,106 = pixel 1600,1696)
+	var mount: Node2D = _mount_scene.instantiate()
+	mount.position = Vector2(3236.0, 3156.0)
+	add_child(mount)
+	mount.setup(load("res://resources/mount_boar.tres"), _player)
 
 
 func _spawn_interactive_trees() -> void:
@@ -790,16 +820,17 @@ func _setup_minimap() -> void:
 
 	# Borde exterior (1 px, azul oscuro)
 	var border := ColorRect.new()
-	border.position = _minimap_off - Vector2(1.0, 1.0)
-	border.size     = Vector2(float(_MM_PX) + 2.0, float(_MM_PX) + 2.0)
-	border.color    = Color(0.35, 0.50, 0.70, 1.0)
+	border.position     = _minimap_off - Vector2(1.0, 1.0)
+	border.size         = Vector2(float(_MM_PX) + 2.0, float(_MM_PX) + 2.0)
+	border.color        = Color(0.35, 0.50, 0.70, 1.0)
+	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	cl.add_child(border)
 
-	# Fondo oscuro del área interior (visible en zonas sin tiles)
 	var bg := ColorRect.new()
-	bg.position = _minimap_off
-	bg.size     = Vector2(float(_MM_PX), float(_MM_PX))
-	bg.color    = Color(0.08, 0.09, 0.12, 1.0)
+	bg.position     = _minimap_off
+	bg.size         = Vector2(float(_MM_PX), float(_MM_PX))
+	bg.color        = Color(0.08, 0.09, 0.12, 1.0)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	cl.add_child(bg)
 
 	# SubViewport que comparte el mismo World2D: renderiza los mismos tiles
@@ -859,6 +890,76 @@ func _mm_update_markers() -> void:
 
 
 # ─── Helpers de estilo ────────────────────────────────────────────────────────
+
+# ─── Multijugador ─────────────────────────────────────────────────────────────
+
+func _setup_multiplayer_players() -> void:
+	var my_id := multiplayer.get_unique_id()
+	for pid: int in Network.players:
+		if pid == my_id:
+			continue
+		_spawn_remote_player(pid, Network.players[pid])
+	Network.peer_joined.connect(_on_net_peer_joined)
+	Network.peer_left.connect(_on_net_peer_left)
+
+
+func _spawn_remote_player(peer_id: int, data: Dictionary) -> void:
+	var rp: Node2D = _remote_player_scene.instantiate()
+	rp.name = "RemotePlayer_%d" % peer_id
+	add_child(rp)
+	rp.global_position = _player.global_position
+	rp.call("setup", data)
+	_remote_players[peer_id] = rp
+	print("[World] Jugador remoto spawneado: peer %d" % peer_id)
+
+
+func _on_net_peer_joined(peer_id: int, data: Dictionary) -> void:
+	if peer_id == multiplayer.get_unique_id():
+		return
+	if not _remote_players.has(peer_id):
+		_spawn_remote_player(peer_id, data)
+
+
+func _on_net_peer_left(peer_id: int) -> void:
+	if _remote_players.has(peer_id):
+		_remote_players[peer_id].queue_free()
+		_remote_players.erase(peer_id)
+
+
+# Llamado por player.gd cada 1/15 s. No es RPC — es una llamada local que luego despacha RPCs.
+func _net_send_player_state(pos: Vector2, anim: String, flip: bool) -> void:
+	if not multiplayer.has_multiplayer_peer():
+		return
+	var my_id := multiplayer.get_unique_id()
+	if multiplayer.is_server():
+		# El servidor envía directamente su estado a todos los clientes
+		for pid: int in Network.players:
+			if pid != 1:
+				_recv_remote_state.rpc_id(pid, my_id, pos, anim, flip)
+	else:
+		# El cliente envía al servidor para que haga el relay
+		_relay_player_state.rpc_id(1, pos, anim, flip)
+
+
+# Servidor recibe estado de un cliente y lo reenvía a los demás clientes.
+@rpc("any_peer", "call_remote", "unreliable_ordered")
+func _relay_player_state(pos: Vector2, anim: String, flip: bool) -> void:
+	var sender := multiplayer.get_remote_sender_id()
+	if sender == 0:
+		return
+	if _remote_players.has(sender):
+		(_remote_players[sender] as Node2D).update_state(pos, anim, flip)
+	for pid: int in Network.players:
+		if pid != sender and pid != 1:
+			_recv_remote_state.rpc_id(pid, sender, pos, anim, flip)
+
+
+# Clientes reciben estado de un jugador remoto (retransmitido por el servidor).
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _recv_remote_state(peer_id: int, pos: Vector2, anim: String, flip: bool) -> void:
+	if _remote_players.has(peer_id):
+		(_remote_players[peer_id] as Node2D).update_state(pos, anim, flip)
+
 
 func _dark_sb() -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()

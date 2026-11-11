@@ -24,6 +24,8 @@ CompanionSystem="*res://autoload/companion_system.gd"
 FamiliarSystem="*res://autoload/familiar_system.gd"
 UIManager="*res://autoload/ui_manager.gd"
 TutorialSystem="*res://autoload/tutorial_system.gd"
+Network="*res://autoload/network.gd"
+ServerManager="*res://autoload/server_manager.gd"
 
 [display]
 
@@ -53,3 +55,4 @@ textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
